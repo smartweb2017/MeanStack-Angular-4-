@@ -1,0 +1,91 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title">
+            <div class="row">
+                <h4 class="pull-left">Company Management</h4>
+                <ol class="breadcrumb pull-right">
+	                <li><a href="javascript: void(0);"><i class="fa fa-home"></i></a></li>
+	                <li>Company Management</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div><!-- end .page title-->
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <ng-container *ngIf="user.accounttype === 'super'">
+                <a [routerLink]="['/company']"  class="btn btn-primary"><i class="fa fa-bank"></i> Register New Company</a>
+            </ng-container>
+            <ng-container *ngIf="user.accounttype === 'staff' || user.accounttype === 'customer'">
+                <ng-container *ngIf="user.role">
+                    <a [routerLink]="['/company']" *ngIf="user.role.company.create" class="btn btn-primary"><i class="fa fa-bank"></i> Register New Company</a>
+                </ng-container>
+                <ng-container *ngIf="user.special_permissions">
+                    <a [routerLink]="['/company']" *ngIf="user.special_permissions.company.create" class="btn btn-primary"><i class="fa fa-bank"></i> Register New Company</a>
+                </ng-container>
+            </ng-container>            
+        </div>
+        <div  class="col-md-12 col-sm-12s">
+            <div class="table-responsive">            
+                <table class="tablesaw" data-tablesaw-sortable data-tablesaw-sortable-switch>
+                    
+                    <thead>
+                        <tr>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">
+                                #
+                            </th>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Company</th>                            
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="4">Status</th>                                                    
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr *ngFor="let item of currentCompanies">
+                            <td class="title">
+                                <input type="checkbox" name="select" value="{{item._id}}" (change)="selectElement($event)">
+                            </td>                            
+                            <td class="title">
+                                <ng-container *ngIf="user.accounttype==='super'">
+                                    <a [routerLink]="['/company', item._id]">{{ item.name }}</a>
+                                </ng-container>
+                                <ng-container *ngIf="user.accounttype==='staff' || user.accounttype==='customer'">
+                                    <ng-container *ngIf="user.role">
+                                        <a [routerLink]="['/company', item._id]" *ngIf="user.role.company.edit">{{ item.name }}</a>
+                                        <span *ngIf="!user.role.company.edit">{{ item.name }}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="user.special_permissions">
+                                        <a [routerLink]="['/company', item._id]" *ngIf="user.special_permissions.company.edit">{{ item.name }}</a>
+                                        <span *ngIf="!user.special_permissions.company.edit">{{ item.name }}</span>
+                                    </ng-container>
+                                </ng-container>
+                            </td>                            
+                            <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
+                        </tr>                 
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>  
+<br>
+<div class="row">
+  <div class="col-sm-12 col-md-12">
+    <div class="form-group" *ngIf=" user.accounttype === 'super'">
+      <button type="button" id="button-filter" class="btn btn-primary" (click)="deleteComapnies()"><i class="fa fa-delete"></i> Delete Selected</button>
+      <button type="button"  id="button-filter" class="btn btn-primary " (click)="deactivateComapnies()"><i class="fa fa-delete"></i> Deactivate Selected</button>
+      <button  type="button" id="button-filter" class="btn btn-primary " (click)="reactivateComapnies()"><i class="fa fa-delete"></i> Reactivate Selected</button>
+    </div>
+    <div class="form-group" *ngIf=" user.accounttype === 'staff' || user.accounttype === 'customer' ">
+    <ng-container *ngIf="user.role">
+      <button type="button" *ngIf="user.role.role.delete" id="button-filter" class="btn btn-primary " (click)="deactivateComapnies()"><i class="fa fa-delete"></i> Deactivate Selected</button>
+      <button  type="button" *ngIf="user.role.role.delete" id="button-filter" class="btn btn-primary " (click)="reactivateComapnies()"><i class="fa fa-delete"></i> Reactivate Selected</button>
+    </ng-container>
+    <ng-container *ngIf="user.special_permissions">
+        <button type="button" *ngIf="user.special_permissions.role.delete" id="button-filter" class="btn btn-primary " (click)="deactivateComapnies()"><i class="fa fa-delete"></i> Deactivate Selected</button>
+      <button *ngIf="user.special_permissions.role.delete" type="button" id="button-filter" class="btn btn-primary " (click)="reactivateComapnies()"><i class="fa fa-delete"></i> Reactivate Selected</button>
+    </ng-container>      
+    </div>
+  </div>
+</div>

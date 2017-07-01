@@ -1,0 +1,115 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title">
+      <div class="row">
+        <h4 class="pull-left">Orders/Invoices Management</h4>
+        <ol class="breadcrumb pull-right">
+          <li><a href="javascript: void(0);"><i class="fa fa-home"></i></a></li>
+          <li>Orders/Invoices Management</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end .page title-->
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="form-group">
+      <button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-user"></i> Create New Order</button>
+      <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-user"></i> Merge For Single Payment</button>
+    </div>
+
+
+    <div class="well">
+      <div class="row">
+        <div class="col-sm-2">
+          <div class="form-group">
+            <label for="" class="control-label">Filter By</label>
+          </div>
+        </div>
+
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label class="control-label" for="input-status">Type</label>
+            <select name="filter_status" id="input-status" class="form-control">
+                            <option value="*">New York</option>
+                            <option value="1">London</option>
+                            <option value="0">Paris</option>
+                        </select>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label class="control-label" for="input-status">Store</label>
+            <select name="filter_status" id="input-status" class="form-control">
+                            <option value="*">New York</option>
+                            <option value="1">London</option>
+                            <option value="0">Paris</option>
+                        </select>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label class="control-label" for="input-status">Village</label>
+            <select name="filter_status" id="input-status" class="form-control">
+                            <option value="*">New York</option>
+                            <option value="1">London</option>
+                            <option value="0">Paris</option>
+                        </select>
+          </div>
+        </div>
+
+        <div class="col-sm-1">
+          <div class="form-group">
+            <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Filter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form method="post" enctype="multipart/form-data" id="form-product" class="">
+      <div class="table-responsive">
+        <table class="tablesaw" data-tablesaw-sortable data-tablesaw-sortable-switch>
+
+          <thead>
+            <tr>
+              <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">#</th>
+              <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Type
+              </th>
+              <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Invoice #
+              </th>
+              <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Invoiced Date
+              </th>
+              <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Store
+              </th>
+              <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Village
+              </th>
+              <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Balance
+              </th>
+              <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let item of rows">
+            <tr>
+              <td class="text-center"> <input type="checkbox" name="selected[]" value="42">
+              </td>
+              <td class="text-center"><a [routerLink]="['/user', item.id]">{{ item.type }}</a></td>
+              <td class="text-center">{{ item.invoice }}</td>
+              <td class="text-center">{{ item.invoicedDate }}</td>
+              <td class="text-center">{{ item.store }}</td>
+              <td class="text-center">{{ item.village }}</td>
+              <td class="text-center">{{ item.balance }}</td>
+              <td class="text-center"></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </form>
+    <div class="form-group" *ngIf="user.accounttype === 'super' ">
+      <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-delete"></i> Delete Selected</button>
+    </div>
+
+  </div>
+</div>

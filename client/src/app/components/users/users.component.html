@@ -1,0 +1,350 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title">
+            <div class="row">
+                <h4 class="pull-left">User Management</h4>
+                <ol class="breadcrumb pull-right">
+                    <li><a href="javascript: void(0);"><i class="fa fa-home"></i></a></li>
+                    <li>User Management</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end .page title-->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <ng-container *ngIf="user.accounttype==='super'">
+                <a [routerLink]="['/create']" class="btn btn-primary"><i class="fa fa-user"></i> Create New User</a>
+            </ng-container>
+            <ng-container *ngIf="user.accounttype==='staff' || user.accounttype==='customer'">
+                <ng-container *ngIf="user.role">
+                    <a [routerLink]="['/create']" class="btn btn-primary" *ngIf="user.role.staff.create || user.role.customer.create"><i class="fa fa-user"></i> Create New User</a>
+                </ng-container>
+                <ng-container *ngIf="user.special_permissions">
+                    <a [routerLink]="['/create']" class="btn btn-primary" *ngIf="user.special_permissions.staff.create || user.special_permissions.customer.create"><i class="fa fa-user"></i> Create New User</a>
+                </ng-container>
+            </ng-container>
+        </div>
+        <div class="well" *ngIf="user.accounttype==='super'">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="" class="control-label">Filter By</label>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label class="control-label" for="input-status">User Type</label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <select name="filter_status" [(ngModel)]="filterUserType" id="input-status" class="form-control">
+                            <option value="staff">Staff</option>
+                            <option value="customer">Customer</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <button type="button" (click)="filter()" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="well" *ngIf=" user.accounttype==='staff' || user.accounttype==='customer' ">
+            <ng-container *ngIf=" user.role ">
+                <ng-container *ngIf=" (user.role.staff.create || user.role.staff.edit || user.role.staff.delete || user.role.staff.view) && (user.role.customer.create || user.role.customer.edit || user.role.customer.delete || user.role.customer.view) ">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="" class="control-label">Filter By</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label class="control-label" for="input-status">User Type</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select name="filter_status" [(ngModel)]="filterUserType" id="input-status" class="form-control">
+                                    <option value="staff">Staff</option>
+                                    <option value="customer">Customer</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <button type="button" (click)="filter()" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Filter</button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngIf=" user.special_permissions ">
+                <ng-container *ngIf=" ( user.special_permissions.staff.create || user.special_permissions.staff.edit || user.special_permissions.staff.delete || user.special_permissions.staff.view) && ( user.special_permissions.customer.create || user.special_permissions.customer.edit || user.special_permissions.customer.delete || user.special_permissions.customer.view) ">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="" class="control-label">Filter By</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label class="control-label" for="input-status">User Type</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select name="filter_status" [(ngModel)]="filterUserType" id="input-status" class="form-control">
+                                    <option value="staff">Staff</option>
+                                    <option value="customer">Customer</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <button type="button" (click)="filter()" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Filter</button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+        <form method="post" enctype="multipart/form-data" id="form-product" class="">
+            <div class="table-responsive">
+                <table class="tablesaw" data-tablesaw-sortable data-tablesaw-sortable-switch>
+                    <thead *ngIf="user.accounttype === 'super'">
+                        <tr>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">
+                                #
+                            </th>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Name</th>
+                            <th id="custom-sort" scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Company</th>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="1">User Type</th>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="4">Status</th>
+                        </tr>
+                    </thead>
+                    <thead *ngIf="user.accounttype === 'staff'">
+                        <tr>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">
+                                #
+                            </th>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Name</th>
+                            <th id="custom-sort" scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Company</th>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="1">User Type</th>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="4">Status</th>
+                        </tr>
+                    </thead>
+                    <thead *ngIf="user.accounttype === 'customer'">
+                        <tr>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">
+                                #
+                            </th>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Name</th>
+                            <th id="custom-sort" scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Company</th>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="1">
+                                <abbr title="Rotten Tomato Rating">User Type</abbr>
+                            </th>
+                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="4">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="user.accounttype === 'super'">
+                        <tr *ngFor="let item of temp">
+                            <ng-container *ngIf="item.accounttype !== 'super'">
+                                <td class="title">
+                                    <input type="checkbox" name="select" value="{{item._id}}" (change)="selectElement($event)" />
+                                </td>
+                                <td class="title"><a [routerLink]="['/user', item._id]">{{ item.username }}</a></td>
+                                <td class="title">{{ item.company }}</td>
+                                <td class="title">{{ item.accounttype }}</td>
+                                <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="user.accounttype === 'staff'">
+                        <tr *ngFor="let item of temp">
+                            <ng-container *ngIf="user.role">
+                                <ng-container *ngIf="user.role.customer.create || user.role.customer.edit || user.role.customer.delete || user.role.customer.view ">
+                                    <ng-container *ngIf=" user.role.staff.create || user.role.staff.edit|| user.role.staff.delete || user.role.staff.view ">
+                                        <ng-container *ngIf="(item.accounttype !== 'super') && (item.username !== user.username) && (item.username !== user.parent)">
+                                            <td class="title">
+                                                <input type="checkbox" value="{{item._id}}" (change)="selectElement($event)" />
+                                            </td>
+                                            <td class="title">
+                                                <ng-container *ngIf="item.accounttype==='staff'">
+                                                    <a [routerLink]="['/user', item._id]" *ngIf="user.role.staff.edit">{{ item.username }}</a>
+                                                    <ng-container *ngIf="!user.role.staff.edit">
+                                                        {{ item.username }}
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-container *ngIf="item.accounttype==='customer'">
+                                                    <a [routerLink]="['/user', item._id]" *ngIf="user.role.customer.edit">{{ item.username }}</a>
+                                                    <ng-container *ngIf="!user.role.customer.edit">
+                                                        {{ item.username }}
+                                                    </ng-container>
+                                                </ng-container>
+                                            </td>
+                                            <td class="title">{{ item.company }}</td>
+                                            <td class="title">{{ item.accounttype }}</td>
+                                            <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf=" !user.role.staff.create && !user.role.staff.edit&& !user.role.staff.delete && !user.role.staff.view ">
+                                        <ng-container *ngIf="(item.accounttype !== 'super') && (item.accounttype !== 'staff') && (item.username !== user.username) && (item.username !== user.parent)">
+                                            <td class="title">
+                                                <input type="checkbox" value="{{item._id}}" (change)="selectElement($event)" />
+                                            </td>
+                                            <td class="title">
+                                                <a [routerLink]="['/user', item._id]" *ngIf="user.role.customer.edit">{{ item.username }}</a>
+                                                <ng-container *ngIf="!user.role.customer.edit">
+                                                    {{ item.username }}
+                                                </ng-container>
+                                            </td>
+                                            <td class="title">{{ item.company }}</td>
+                                            <td class="title">{{ item.accounttype }}</td>
+                                            <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
+                                        </ng-container>
+                                    </ng-container>
+                                </ng-container>
+                                <ng-container *ngIf="!user.role.customer.create && !user.role.customer.edit && !user.role.customer.delete && !user.role.customer.view ">
+                                    <ng-container *ngIf="(item.accounttype == 'staff') && (item.username !== user.username) && (item.username !== user.parent)">
+                                        <td class="title">
+                                            <input type="checkbox" value="{{item._id}}" (change)="selectElement($event)" />
+                                        </td>
+                                        <td class="title">
+                                            <a [routerLink]="['/user', item._id]" *ngIf="user.role.staff.edit">{{ item.username }}</a>
+                                            <ng-container *ngIf="!user.role.staff.edit">
+                                                {{ item.username }}
+                                            </ng-container>
+                                        </td>
+                                        <td class="title">{{ item.company }}</td>
+                                        <td class="title">{{ item.accounttype }}</td>
+                                        <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+                            <ng-container *ngIf="user.special_permissions">
+                                <ng-container *ngIf="user.special_permissions.customer.create || user.special_permissions.customer.edit || user.special_permissions.customer.delete || user.special_permissions.customer.view ">
+                                    <ng-container *ngIf=" user.special_permissions.staff.create || user.special_permissions.staff.edit || user.special_permissions.staff.delete || user.special_permissions.staff.view  ">
+                                        <ng-container *ngIf="(item.accounttype !== 'super') && (item.username !== user.username) && (item.username !== user.parent)">
+                                            <td class="title">
+                                                <input type="checkbox" value="{{item._id}}" (change)="selectElement($event)" />
+                                            </td>
+                                            <td class="title">
+                                                <ng-container *ngIf="item.accounttype==='staff'">
+                                                    <a [routerLink]="['/user', item._id]" *ngIf="user.special_permissions.staff.edit">{{ item.username }}</a>
+                                                    <ng-container *ngIf="!user.special_permissions.staff.edit">
+                                                        {{ item.username }}
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-container *ngIf="item.accounttype==='customer'">
+                                                    <a [routerLink]="['/user', item._id]" *ngIf="user.special_permissions.customer.edit">{{ item.username }}</a>
+                                                    <ng-container *ngIf="!user.special_permissions.customer.edit">
+                                                        {{ item.username }}
+                                                    </ng-container>
+                                                </ng-container>
+                                            </td>
+                                            <td class="title">{{ item.company }}</td>
+                                            <td class="title">{{ item.accounttype }}</td>
+                                            <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf=" !user.special_permissions.staff.create && !user.special_permissions.staff.edit && !user.special_permissions.staff.delete && !user.special_permissions.staff.view   ">
+                                        <ng-container *ngIf="(item.accounttype !=='staff') && (item.accounttype !== 'super') && (item.username !== user.username) && (item.username !== user.parent)">
+                                            <td class="title">
+                                                <input type="checkbox" value="{{item._id}}" (change)="selectElement($event)" />
+                                            </td>
+                                            <td class="title">
+                                                <ng-container *ngIf="item.accounttype==='staff'">
+                                                    <a [routerLink]="['/user', item._id]" *ngIf="user.special_permissions.staff.edit">{{ item.username }}</a>
+                                                    <ng-container *ngIf="!user.special_permissions.staff.edit">
+                                                        {{ item.username }}
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-container *ngIf="item.accounttype==='customer'">
+                                                    <a [routerLink]="['/user', item._id]" *ngIf="user.special_permissions.customer.edit">{{ item.username }}</a>
+                                                    <ng-container *ngIf="!user.special_permissions.customer.edit">
+                                                        {{ item.username }}
+                                                    </ng-container>
+                                                </ng-container>
+                                            </td>
+                                            <td class="title">{{ item.company }}</td>
+                                            <td class="title">{{ item.accounttype }}</td>
+                                            <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
+                                        </ng-container>
+                                    </ng-container>
+                                </ng-container>
+                                <ng-container *ngIf="!user.special_permissions.customer.create && !user.special_permissions.customer.edit && !user.special_permissions.customer.delete && !user.special_permissions.customer.view ">
+                                    <ng-container *ngIf="(item.accounttype == user.accounttype) && (item.username !== user.username) && (item.username !== user.parent) ">
+                                        <td class="title">
+                                            <input type="checkbox" value="{{item._id}}" (change)="selectElement($event)" />
+                                        </td>
+                                        <td class="title">
+                                            <a [routerLink]="['/user', item._id]" *ngIf="user.special_permissions.staff.edit">{{ item.username }}</a>
+                                            <ng-container *ngIf="!user.special_permissions.staff.edit">
+                                                {{ item.username }}
+                                            </ng-container>
+                                        </td>
+                                        <td class="title">{{ item.company }}</td>
+                                        <td class="title">{{ item.accounttype }}</td>
+                                        <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf=" user.accounttype === 'customer'">
+                        <tr *ngFor="let item of childs">
+                            <ng-container *ngIf="(item.accounttype == user.accounttype) && (item.username !== user.username) && (item.username !== user.parent)">
+                                <td class="title">
+                                    <input type="checkbox" value="{{item._id}}" (change)="selectElement($event)" />
+                                </td>
+                                <td class="title">
+                                    <ng-container *ngIf="user.role">
+                                        <a [routerLink]="['/user', item._id]" *ngIf="user.role.customer.edit">{{ item.username }}</a>
+                                        <ng-container *ngIf="!user.role.customer.edit">
+                                            {{ item.username }}
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf="user.special_permissions">
+                                        <a [routerLink]="['/user', item._id]" *ngIf="user.special_permissions.customer.edit">{{ item.username }}</a>
+                                        <ng-container *ngIf="!user.special_permissions.customer.edit">{{ item.username }}</ng-container>
+                                    </ng-container>
+                                </td>
+                                <td class="title">{{ item.company }}</td>
+                                <td class="title">{{ item.accounttype }}</td>
+                                <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+        <br>
+        <div class="form-group">
+            <ng-container *ngIf="user.accounttype === 'super'">
+                <button type="button"  id="button-filter" class="btn btn-primary " (click)="deleteUsers()"><i class="fa fa-delete"></i> Delete Selected</button>
+                <button type="button" id="button-filter" class="btn btn-primary" (click)="inActivateUsers()"><i class="fa fa-delete"></i> Deactivate Selected</button>
+                <button type="button" id="button-filter" class="btn btn-primary" (click)="reActivateUsers()"><i class="fa fa-delete"></i> Reactivate Selected</button>
+            </ng-container>
+            <ng-container *ngIf="user.accounttype === 'staff' || user.accounttype === 'customer' ">
+                <ng-container *ngIf="user.role">
+                    <ng-container *ngIf="user.role.staff.delete || user.role.customer.delete">
+                        <button type="button" id="button-filter" class="btn btn-primary" (click)="inActivateUsers()"><i class="fa fa-delete"></i> Deactivate Selected</button>
+                        <button type="button" id="button-filter" class="btn btn-primary" (click)="reActivateUsers()"><i class="fa fa-delete"></i> Reactivate Selected</button>
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf="user.special_permissions">
+                    <ng-container *ngIf="user.special_permissions.staff.delete || user.special_permissions.customer.delete">
+                        <button type="button" id="button-filter" class="btn btn-primary" (click)="inActivateUsers()"><i class="fa fa-delete"></i> Deactivate Selected</button>
+                        <button type="button" id="button-filter" class="btn btn-primary" (click)="reActivateUsers()"><i class="fa fa-delete"></i> Reactivate Selected</button>
+                    </ng-container>
+                </ng-container>
+            </ng-container>            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+<!--For Super User-->
+<aside class="sidebar" *ngIf="user.accounttype  === 'super'">
+  <nav class="sidebar-nav">
+    <ul class="metismenu" id="menu">
+
+      <li class="active">
+        <a routerLink="/dashboard"><i class="icon-grid"></i> <span class="nav-label">Dashboard</span></a>
+      </li>
+      <li>
+        <a [routerLink]="['/users']"><i class="fa fa-users"></i> <span class="nav-label">Users</span></a>
+      </li>
+      <li>
+        <a [routerLink]="['/roles']"><i class="fa fa-edit"></i> <span class="nav-label">User Roles</span></a>
+      </li>
+      <li>
+        <a [routerLink]="['/stores']"><i class="fa fa-building"></i> <span class="nav-label">Stores</span></a>
+      </li>
+      <li>
+        <a [routerLink]="['/companies']"><i class="fa fa-bank"></i> <span class="nav-label">Companies</span></a>
+      </li>
+      <li>
+        <a [routerLink]="['/orders']"><i class="fa fa-shopping-bag"></i> <span class="nav-label">Orders/Invoices</span></a>
+      </li>
+
+    </ul>
+  </nav>
+</aside>
+<!--For staff  and customer -->
+<aside class="sidebar" *ngIf="user.accounttype  === 'staff' || user.accounttype === 'customer' ">
+  <ng-container *ngIf=" user.role || user.special_permissions ">
+    <nav class="sidebar-nav">
+      <ul class="metismenu" id="menu">
+        <ng-container *ngIf="user.role">
+          <li class="active" *ngIf="user.role.display_dashboard">
+            <a routerLink="/dashboard"><i class="icon-grid"></i> <span class="nav-label">Dashboard</span></a>
+          </li>
+          <li *ngIf="user.role.customer.create || user.role.customer.delete || user.role.customer.edit || user.role.customer.view || user.role.staff.create || user.role.staff.edit || user.role.staff.delete || user.role.staff.view">
+            <a [routerLink]="['/users']"><i class="fa fa-users"></i> <span class="nav-label">Users</span></a>
+          </li>
+          <li *ngIf="user.role.role.create || user.role.role.edit || user.role.role.delete || user.role.role.view">
+            <a [routerLink]="['/roles']"><i class="fa fa-edit"></i> <span class="nav-label">User Roles</span></a>
+          </li>
+          <li *ngIf="user.role.store.create || user.role.store.edit || user.role.store.delete || user.role.store.view">
+            <a [routerLink]="['/stores']"><i class="fa fa-building"></i> <span class="nav-label">Stores</span></a>
+          </li>
+          <li *ngIf="user.role.company.create || user.role.company.edit || user.role.company.delete || user.role.company.view">
+            <a [routerLink]="['/companies']"><i class="fa fa-bank"></i> <span class="nav-label">Companies</span></a>
+          </li>
+          <li *ngIf="user.role.order.create || user.role.order.edit || user.role.order.delete || user.role.order.view">
+            <a [routerLink]="['/orders']"><i class="fa fa-shopping-bag"></i> <span class="nav-label">Orders/Invoices</span></a>
+          </li>
+        </ng-container>
+
+        <ng-container *ngIf="user.special_permissions">
+          <li class="active" *ngIf="user.special_permissions.display_dashboard">
+            <a routerLink="/dashboard"><i class="icon-grid"></i> <span class="nav-label">Dashboard</span></a>
+          </li>
+          <li *ngIf="user.special_permissions.customer.create || user.special_permissions.customer.delete || user.special_permissions.customer.edit || user.special_permissions.customer.view || user.special_permissions.staff.create || user.special_permissions.staff.edit || user.special_permissions.staff.delete || user.special_permissions.staff.view">
+            <a [routerLink]="['/users']"><i class="fa fa-users"></i> <span class="nav-label">Users</span></a>
+          </li>
+          <li *ngIf="user.special_permissions.role.create || user.special_permissions.role.edit || user.special_permissions.role.delete || user.special_permissions.role.view">
+            <a [routerLink]="['/roles']"><i class="fa fa-edit"></i> <span class="nav-label">User Roles</span></a>
+          </li>
+          <li *ngIf="user.special_permissions.store.create || user.special_permissions.store.edit || user.special_permissions.store.delete || user.special_permissions.store.view">
+            <a [routerLink]="['/stores']"><i class="fa fa-building"></i> <span class="nav-label">Stores</span></a>
+          </li>
+          <li *ngIf="user.special_permissions.company.create || user.special_permissions.company.edit || user.special_permissions.company.delete || user.special_permissions.company.view">
+            <a [routerLink]="['/companies']"><i class="fa fa-bank"></i> <span class="nav-label">Companies</span></a>
+          </li>
+          <li *ngIf="user.special_permissions.order.create || user.special_permissions.order.edit || user.special_permissions.order.delete || user.special_permissions.order.view">
+            <a [routerLink]="['/orders']"><i class="fa fa-shopping-bag"></i> <span class="nav-label">Orders/Invoices</span></a>
+          </li>
+        </ng-container>
+      </ul>
+    </nav>
+  </ng-container>
+
+</aside>

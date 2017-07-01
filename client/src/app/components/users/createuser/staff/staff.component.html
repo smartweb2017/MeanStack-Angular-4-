@@ -1,0 +1,284 @@
+<!-- end .page title-->
+<div class="row">
+   <div class="col-sm-12 col-md-12">
+      <div class="panel panel-card margin-b-30">
+         <div class="well">
+            <div class="panel-body">
+               <form class="form-horizontal group-border stripped" name="form" #userForm="ngForm" (ngSubmit)="onSubmit()">
+               <div class="form-group">
+                  <label class="col-lg-2 col-md-3 control-label">Name</label>
+                  <div class="col-lg-5 col-md-5">
+                     <input type="text" name="username" placeholder="Enter Your UserName" minlength="4" maxlength="24" class="form-control" [(ngModel)]="staff.username"
+                     #username="ngModel" required>
+                  </div>
+                  <div *ngIf="username.errors && (username.dirty || username.touched) && !username.valid" class="col-lg-5 col-md-5 col-lg-offset-2 col-md-offset-3 alert alert-danger">
+                     <div [hidden]="!username.errors.required">
+                        Name is required
+                     </div>
+                     <div [hidden]="!username.errors.minlength">
+                        Name must be at least 4 characters long.
+                     </div>
+                     <div [hidden]="!username.errors.maxlength">
+                        Name cannot be more than 24 characters long.
+                     </div>
+                  </div>
+               </div>
+               
+               <div class="form-group">
+                  <label class="col-lg-2 col-md-3 control-label">Company</label>
+                  <div class="col-lg-3 col-md-3">
+                     <select class="fancy-select form-control" name="company" [(ngModel)]="staff.company" required #company="ngModel">
+                     <option *ngFor="let c of currentCompanies" [value]="c.name">{{c.name}}</option>
+                     </select>
+                  </div>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#companyModal" *ngIf="user.accounttype==='super'"> Add A Company</button>
+                     <ng-container *ngIf="user.accounttype==='staff' || user.accounttype==='customer'">
+                        <ng-container *ngIf="user.role">
+                            <ng-container>
+                                
+                            </ng-container>
+                            <button type="button" *ngIf="user.role.company.create" class="btn btn-info" data-toggle="modal" data-target="#companyModal"> Add A Company</button>
+                        </ng-container>
+                        <ng-container *ngIf="user.special_permissions">
+                            <button type="button" *ngIf="user.special_permissions.company.create" class="btn btn-info" data-toggle="modal" data-target="#companyModal"> Add A Company</button>
+                        </ng-container>
+                     </ng-container>
+                  <div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                     <div class="modal-dialog">
+                        <div class="modal-content">
+                           <div class="modal-header text-center">
+                              <h4 class="modal-title">Add A New Company</h4>
+                              <small>Please enter the content of your company.</small>
+                           </div>
+                           <div class="modal-body">
+                              <div class="form-group">
+                                 <label class="col-lg-2 col-md-3 control-label">Company</label>
+                                 <div class="col-lg-5 col-md-5">
+                                    <input type="text" name="companyname" placeholder="Enter Company Name" minlength="3" maxlength="24" class="form-control"
+                                    [(ngModel)]="newCompany.name" #companyname="ngModel" >
+                                 </div>
+                                 <div *ngIf="companyname.errors && (companyname.dirty || companyname.touched) && !companyname.valid" class="col-lg-5 col-md-5 col-lg-offset-2 col-md-offset-3 alert alert-danger">
+                                    <div [hidden]="!companyname.errors.required">
+                                       Name is required
+                                    </div>
+                                    <div [hidden]="!companyname.errors.minlength">
+                                       Name must be at least 4 characters long.
+                                    </div>
+                                    <div [hidden]="!companyname.errors.maxlength">
+                                       Name cannot be more than 24 characters long.
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-accent" data-dismiss="modal" (click)="createCompany()">Save changes</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div *ngIf="company.errors && company.touched" class=" col-lg-5 col-md-5  col-lg-offset-2 col-md-offset-3 alert alert-danger">
+                     <div [hidden]="!company.errors.required">Company is required</div>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label class="col-lg-2 col-md-3 control-label">Email</label>
+                  <div class="col-lg-5 col-md-5">
+                     <input type="email" name="email" placeholder="Enter email" class="form-control" [(ngModel)]="user_info.email" #email="ngModel"
+                     [email]="true" required>
+                  </div>
+                  <div *ngIf="email.errors && email.touched" class=" col-lg-5 col-md-5 col-lg-offset-2 col-md-offset-3 alert alert-danger">
+                     <div [hidden]="!email.errors.required">Email is required</div>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label class="col-lg-2 col-md-3 control-label">Phone</label>
+                  <div class="col-lg-5 col-md-5">
+                     <input type="text"  name="phone" placeholder="Phone number" class="form-control"
+                     [(ngModel)]="user_info.phone" #phone="ngModel" required>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label class="col-lg-2 col-md-3 control-label">Mobile</label>
+                  <div class="col-lg-5 col-md-5">
+                     <input type="text"  name="mobile" placeholder="Phone number" class="form-control"
+                     [(ngModel)]="user_info.mobile" #mobile="ngModel" required>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label class="col-lg-2  col-md-3 control-label" for="profileRole">Role</label>
+                  <div class="col-md-3" *ngIf="modalValid">
+                     <select class="fancy-select form-control" id="profileRole" name="role" [(ngModel)]="staff.role_name"  #role="ngModel">
+                     <option *ngFor="let r of roles" [value]="r.role_name">{{r.role_name}}</option>
+                     </select>
+                  </div>
+                  <div class="col-md-4">
+                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#roleModal"> Manage This User's Permission</button>
+                  </div>
+                  <div class="modal fade" id="roleModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                     <div class="modal-dialog">
+                        <div class="modal-content">
+                           <div class="modal-header text-center">
+                              <h4 class="modal-title">Manage This User's Permission</h4>
+                           </div>
+                           <div class="modal-body">
+                              <div class="row">
+                                 <div class="col-sm-12">
+                                    <div class="col-md-12 col-sm-12s">
+                                       <div class="table-responsive">
+                                          <table class="tablesaw" data-tablesaw-sortable data-tablesaw-sortable-switch>
+                                             <thead>
+                                                <tr>
+                                                   <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">
+                                                      Permitted Action
+                                                   </th>
+                                                   <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Create</th>
+                                                   <th id="custom-sort" scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Edit</th>
+                                                   <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="4">Delete</th>
+                                                   <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="5">View Only</th>
+                                                </tr>
+                                             </thead>
+                                             <tbody>
+                                                <tr>
+                                                   <td class="title">
+                                                      Manage Staff Users
+                                                   </td>
+                                                   <td class="title"><input type="checkbox" name="create_staff" [checked]="staffPermission.create" (change)="staffPermission.create = !staffPermission.create"
+                                                      />
+                                                   </td>
+                                                   <td class="title"><input type="checkbox" name="edit_staff" [checked]="staffPermission.edit" (change)="staffPermission.edit = !staffPermission.edit"></td>
+                                                   <td class="title"><input type="checkbox" name="delete_staff" [checked]="staffPermission.delete" (change)="staffPermission.delete = !staffPermission.delete"></td>
+                                                   <td class="title"><input type="checkbox" name="view_staff" [checked]="staffPermission.view" (change)="staffPermission.view = !staffPermission.view"></td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="title">
+                                                      Manage Customer Users
+                                                   </td>
+                                                   <td class="title"><input type="checkbox" name="create_customer" [checked]="customerPermission.create"
+                                                      (change)="customerPermission.create = !customerPermission.create">
+                                                   </td>
+                                                   <td class="title"><input type="checkbox" name="edit_customer" [checked]="customerPermission.edit" (change)="customerPermission.edit = !customerPermission.edit"></td>
+                                                   <td class="title"><input type="checkbox" name="delete_customer" [checked]="customerPermission.delete"
+                                                      (change)="customerPermission.delete = !customerPermission.delete">
+                                                   </td>
+                                                   <td class="title"><input type="checkbox" name="view_customer" [checked]="customerPermission.view" (change)="customerPermission.view = !customerPermission.view"></td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="title">
+                                                      Manage Stores
+                                                   </td>
+                                                   <td class="title"><input type="checkbox" name="create_store" [checked]="storePermission.create" (change)="storePermission.create = !storePermission.create"></td>
+                                                   <td class="title"><input type="checkbox" name="edit_store" [checked]="storePermission.edit" (change)="storePermission.edit = !storePermission.edit"></td>
+                                                   <td class="title"><input type="checkbox" name="delete_store" [checked]="storePermission.delete" (change)="storePermission.delete = !storePermission.delete"></td>
+                                                   <td class="title"><input type="checkbox" name="view_store" [checked]="storePermission.view" (change)="storePermission.view = !storePermission.view"></td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="title">
+                                                      Manage Orders
+                                                   </td>
+                                                   <td class="title"><input type="checkbox" name="create_order" [checked]="orderPermission.create" (change)="orderPermission.create  = !orderPermission.create"></td>
+                                                   <td class="title"><input type="checkbox" name="edit_order" [checked]="orderPermission.edit" (change)="orderPermission.edit = !orderPermission.edit"></td>
+                                                   <td class="title"><input type="checkbox" name="delete_order" [checked]="orderPermission.delete" (change)="orderPermission.delete = !orderPermission.delete"></td>
+                                                   <td class="title"><input type="checkbox" name="view_order" [checked]="orderPermission.view" (change)="orderPermission.view = !orderPermission.view"></td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="title">
+                                                      Manage User Roles
+                                                   </td>
+                                                   <td class="title"><input type="checkbox" name="create_role" [checked]="rolePermission.create" (change)="rolePermission.create = !rolePermission.create"></td>
+                                                   <td class="title"><input type="checkbox" name="edit_role" [checked]="rolePermission.edit" (change)="rolePermission.edit = !rolePermission.edit"></td>
+                                                   <td class="title"><input type="checkbox" name="delete_role" [checked]="rolePermission.delete" (change)="rolePermission.delete = !rolePermission.delete"></td>
+                                                   <td class="title"><input type="checkbox" name="view_role" [checked]="rolePermission.view" (change)="rolePermission.view = !rolePermission.view"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="title">
+                                                        Manage Companies 
+                                                    </td>                            
+                                                    <td class="title"><input type="checkbox" name="create_company" [checked]="companyPermission.create" (change)="companyPermission.create = !companyPermission.create"></td>
+                                                    <td class="title"><input type="checkbox" name="edit_company" [checked]="companyPermission.edit" (change)="companyPermission.edit = !companyPermission.edit"></td>
+                                                    <td class="title"><input type="checkbox" name="delete_company" [checked]="companyPermission.delete" (change)="companyPermission.delete = !companyPermission.delete"></td>
+                                                    <td class="title"><input type="checkbox" name="view_company" [checked]="companyPermission.view" (change)="companyPermission.view = !companyPermission.view"></td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <br>
+                                 <div class="col-sm-6">
+                                     <label for="" class="col-md-5 control-label">Home Screen</label>
+                                     <div class="col-md-7">
+                                          <select class="form-control m-b" name="home_url" [(ngModel)]="home_url">
+                                              <option value=""></option>
+                                              <option value="dashboard">Dashboard</option>
+                                              <option value="users">Users</option>
+                                              <option value="roles">User Roles</option>
+                                              <option value="stores">Stores</option>
+                                              <option value="orders">Orders</option>
+                                          </select>
+                                     </div>
+                                 </div>
+                                 <div class="col-sm-6">
+                                       <input type="checkbox" name="display_dashboard" [checked]="display_dashboard" (change)="display_dashboard = !display_dashboard">
+                                      <label for="">Display Dashboard</label>                                      
+                                  </div>
+                              </div>
+                              <br>
+                           </div>
+                           <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-accent" data-dismiss="modal" (click)="savePermissions()">Save changes</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  
+               </div>
+               <div class="form-group">
+                <label class=" col-lg-2 col-md-3 control-label" for="profileParent">Parent</label>
+                <div class="col-md-4">
+                    <select class="fancy-select form-control" id="profileParent" name="parent" [(ngModel)]="staff.parent"
+                    #parent="ngModel" >
+                    <option value=""></option>
+                    <option *ngFor = "let p of users" [value]="p">{{ p }}</option>
+                    </select>
+                </div>
+                </div>
+               <div class="form-group">
+                  <label class="col-lg-2 col-md-3 control-label">Password</label>
+                  <div class="col-lg-3 col-md-3">
+                     <input type="Password" name="password" placeholder="" class="form-control" [(ngModel)]="staff.password" #password="ngModel"
+                     required>
+                  </div>
+                  <div *ngIf="password.errors && password.touched" class=" col-lg-5 col-md-5  col-lg-offset-2 col-md-offset-3 alert alert-danger">
+                     <div>Please enter Password</div>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label class="col-lg-2 col-md-3 control-label">Confirm Password</label>
+                  <div class="col-lg-3 col-md-3">
+                     <input type="Password" name="confirmPassword" placeholder="" class="form-control" [(ngModel)]="staff.confirmPassword" #confirmPassword="ngModel"
+                     required>
+                  </div>
+                  <div *ngIf="(staff.password !== staff.confirmPassword) &&(confirmPassword.dirty|| confirmPassword.touched )" class=" col-lg-5 col-md-5  col-lg-offset-2 col-md-offset-3 alert alert-danger">
+                     <div>The passwords entered do not match</div>
+                  </div>
+               </div>
+               <div class="col-md-5">
+                  <div class="form-group  text-center">
+                     <button class="btn btn-info btn-primary" (click)="cancel()">
+                     Cancel
+                     </button>
+                     <button type="submit"  [disabled]="!userForm.form.valid" class="btn btn-info  btn-primary">
+                     Save
+                     </button>
+                  </div>
+               </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

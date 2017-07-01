@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title">
+      <div class="row">
+        <h4 class="pull-left">Company Details</h4>
+        <ol class="breadcrumb pull-right">
+          <li><a href="javascript: void(0);"><i class="fa fa-home"></i></a></li>
+          <li>Company Details</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end .page title-->
+
+<div class="row">
+  <div class="col-sm-12 col-md-12">
+    <div class="panel panel-card margin-b-30">
+      <div class="well">
+        <div class="panel-body">
+          <form class="form-horizontal group-border stripped" name="form" #companyForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+
+            <div class="form-group">
+              <label class="col-lg-2 col-md-3 control-label">Company Name</label>
+              <div class="col-lg-5 col-md-5">
+                <input type="text" name="companyname" placeholder="Enter Company Name" minlength="3" maxlength="24" class="form-control"
+                  [(ngModel)]="companyName" #companyname="ngModel" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+
+              <div class="col-md-9 col-md-offset-3">
+                <button type="submit" class="btn btn-primary" [disabled]="!companyForm.form.valid">Submit</button>
+                <button type="reset" class="btn btn-default">Reset</button>
+                <button class="btn btn-info btn-primary" (click)="cancel()">Cancel</button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
