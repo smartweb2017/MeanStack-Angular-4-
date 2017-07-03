@@ -3,12 +3,12 @@
   <form class="form-horizontal group-border stripped" name="form" #userForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
     <div class="col-md-6 margin-b-30">
       <div class="profile-overview">
-        <div class="avtar text-center">
+        <div class="avtar text-center" >
           <img [src]="logoUrl" alt="Preview" class="img-thumbnail img-responsive" style="width:30%; height: 30%;">
           <h3>{{customer.username}}</h3>
           <hr>
         </div>
-        <div class="form-group">
+        <div class="form-group" >
           <label class="col-lg-2 col-md-3 control-label">Logo</label>
           <div class="col-lg-3 col-md-3">
             <input type="file" (change)="readUrl($event)" placeholder="Upload logo..." />
@@ -17,26 +17,14 @@
         <div class="profile-edit">
           <h4 class="mb-xlg">Personal Information</h4>
           <fieldset>
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{ 'has-error' : username.invalid && username.touched }">
               <label class="col-md-3 control-label" for="profileName">Name</label>
               <div class="col-md-8">
                 <input type="text" name="username" id="profileName" placeholder="Enter Your UserName" minlength="4" maxlength="24" class="form-control"
                   [(ngModel)]="customer.username" #username="ngModel" required>
               </div>
-              <div *ngIf="userForm.submitted && !username.valid" class="help-block">Name is required</div>
-              <div *ngIf="username.errors && (username.dirty || username.touched) && !username.valid" class="col-lg-5 col-md-5 col-lg-offset-2 col-md-offset-3 alert alert-danger">
-                <div [hidden]="!username.errors.required">
-                  Name is required
-                </div>
-                <div [hidden]="!username.errors.minlength">
-                  Name must be at least 4 characters long.
-                </div>
-                <div [hidden]="!username.errors.maxlength">
-                  Name cannot be more than 24 characters long.
-                </div>
-              </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" >
               <label class="col-md-3 control-label" for="profileCompany">Company</label>
               <div class="col-md-5">
                 <select class="fancy-select form-control" id="profileCompany" name="company" [(ngModel)]="customer.company" #company="ngModel">
@@ -63,22 +51,11 @@
                       <small>Please enter the content of your company.</small>
                     </div>
                     <div class="modal-body">
-                      <div class="form-group">
+                      <div class="form-group" [ngClass]="{ 'has-error' : companyname.invalid && companyname.touched}">
                         <label class="col-lg-2 col-md-3 control-label">Company</label>
                         <div class="col-lg-5 col-md-5">
                           <input type="text" name="companyname" placeholder="Enter Company Name" minlength="3" maxlength="24" class="form-control"
                             [(ngModel)]="newCompany.name" #companyname="ngModel">
-                        </div>
-                        <div *ngIf="companyname.errors && (companyname.dirty || companyname.touched) && !companyname.valid" class="col-lg-5 col-md-5 col-lg-offset-2 col-md-offset-3 alert alert-danger">
-                          <div [hidden]="!companyname.errors.required">
-                            Name is required
-                          </div>
-                          <div [hidden]="!companyname.errors.minlength">
-                            Name must be at least 4 characters long.
-                          </div>
-                          <div [hidden]="!companyname.errors.maxlength">
-                            Name cannot be more than 24 characters long.
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -89,66 +66,51 @@
                   </div>
                 </div>
               </div>
-              <div *ngIf="userForm.submitted && !company.valid" class="help-block">Company is required</div>
-              <div *ngIf="company.errors && company.touched" class=" col-lg-5 col-md-5  col-lg-offset-2 col-md-offset-3 alert alert-danger">
-                <div [hidden]="!company.errors.required">Company is required</div>
-              </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{ 'has-error' : email.invalid && email.touched}">
               <label class="col-md-3 control-label" for="profileEmail">Email</label>
               <div class="col-md-8">
                 <input type="text" id="profileEmail" name="email" placeholder="Enter email" class="form-control" [(ngModel)]="user_info.email"
                   #email="ngModel" [email]="true" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
               </div>
-              <div *ngIf="userForm.submitted && !email.valid" class="help-block">Email is required</div>
-              <div *ngIf="email.errors && email.touched" class=" col-lg-5 col-md-5 col-lg-offset-2 col-md-offset-3 alert alert-danger">
-                <div [hidden]="!email.errors.required">Email is required</div>
-              </div>
-              <div *ngIf="email.errors && email.errors.pattern">
-                Email is invalid
-              </div>
             </div>
-            <div class="form-group">
+            <div class="form-group"  [ngClass]="{ 'has-error' : phone.invalid && phone.touched}">
               <label class="col-md-3 control-label" for="profilePhone">Phone</label>
               <div class="col-md-8">
                 <input type="text" id="profilePhone" name="phone" placeholder="Phone number" class="form-control" [(ngModel)]="user_info.phone"
                   #phone="ngModel" required>
               </div>
-              <div *ngIf="userForm.submitted && !phone.valid" class="help-block">Phone Number is required</div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{ 'has-error' : mobile.invalid && mobile.touched}">
               <label class="col-md-3 control-label" for="profileMobile">Mobile</label>
               <div class="col-md-8">
                 <input type="text" id="profileMobile" name="mobile" placeholder="Mobile number" class="form-control" [(ngModel)]="user_info.mobile"
                   #mobile="ngModel" required>
               </div>
-              <div *ngIf="userForm.submitted && !mobile.valid" class="help-block">Mobile is required</div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{ 'has-error' : position.invalid && position.touched}">
               <label class="col-md-3 control-label" for="profilePosition">Position</label>
               <div class="col-md-8">
                 <input type="text" id="profilePosition" placeholder="Enter Position" class="form-control" name="position" [(ngModel)]="customer_info.position"
                   #position="ngModel" required>
               </div>
-              <div *ngIf="userForm.submitted && !position.valid" class="help-block">Position is required</div>
             </div>
-            <div class="form-group">
-              <label class="col-md-3 control-label" for="profilePreferContactMethod">Prefered Contact Method</label>
+            <div class="form-group"  [ngClass]="{ 'has-error' : prefered_contact.invalid && prefered_contact.touched}">
+              <label class="col-md-3 control-label" for="prefered_contact">Prefered Contact Method</label>
               <div class="col-md-8">
-                <select class="fancy-select form-control" id="profilePreferContactMethod" name="prefered_contact" [(ngModel)]="customer_info.prefered_contact"
+                <select class="fancy-select form-control" name="prefered_contact" [(ngModel)]="customer_info.prefered_contact"
                   required #prefered_contact="ngModel">
                      <option value="phone">Phone</option>
                      <option value="mobile">Mobile</option>
                      <option value="email">Email</option>
                      </select>
               </div>
-              <div *ngIf="userForm.submitted && !prefered_contact.valid" class="help-block">Prefered Contact Method is required</div>
             </div>
             <div class="avtar text-center">
               <img [src]="photoUrl" alt="Preview" class="img-thumbnail img-responsive" style="width:30%; height: 30%;">
               <hr>
             </div>
-            <div class="form-group">
+            <div class="form-group" >
               <label class="col-lg-2 col-md-3 control-label">Photo</label>
               <div class="col-lg-3 col-md-3">
                 <input type="file" (change)="readPhoto($event)" placeholder="Upload logo..." />
@@ -162,22 +124,21 @@
       <div class="profile-edit">
         <h4 class="mb-xlg">Address Information</h4>
         <fieldset>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="{ 'has-error' : address1.invalid && address1.touched && address2.invalid && address2.touched }">
             <label class="col-md-3 control-label" for="profileAddress1">Address</label>
             <div class="col-md-8">
               <input type="text" placeholder="" id="profileAddress1" class="form-control" name="address1" [(ngModel)]="customer_info.address.address1"
                 #address1="ngModel" required>
             </div>
-            <div *ngIf="userForm.submitted && !address1.valid" class="help-block">Address is required</div>
           </div>
-          <div class="form-group">
+          <div class="form-group" >
             <label class="col-md-3 control-label" for="profileAddress2"></label>
             <div class="col-md-8">
               <input type="text" id="profileAddress2" placeholder="" class="form-control" name="address2" [(ngModel)]="customer_info.address.address2"
                 #address2="ngModel" required>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group"  [ngClass]="{ 'has-error' : region.invalid && region.touched }">
             <label class=" col-md-3 control-label">Region</label>
             <div class="col-md-8">
               <select class="fancy-select form-control" name="region" [(ngModel)]="customer_info.region" (change)="selectRegion($event)"
@@ -185,24 +146,21 @@
                   <option *ngFor = "let reg of regions" [value]="reg">{{ reg }}</option>
                   </select>
             </div>
-            <div *ngIf="userForm.submitted && !region.valid" class="help-block">Region is required</div>
           </div>
-          <div class="form-group">
+          <div class="form-group"  [ngClass]="{ 'has-error' : city.invalid && city.touched }">
             <label class="col-md-3 control-label">City</label>
             <div class="col-md-8">
               <select class="fancy-select form-control" name="city" [(ngModel)]="customer_info.city" name="city" #city="ngModel" required>
                   <option *ngFor = "let city of cities" [value]="city">{{city}}</option>   
                   </select>
             </div>
-            <div *ngIf="userForm.submitted && !city.valid" class="help-block">City is required</div>
           </div>
-          <div class="form-group">
+          <div class="form-group"  [ngClass]="{ 'has-error' : post_code.invalid && post_code.touched }">
             <label class="col-md-3 control-label">Post Code</label>
             <div class="col-md-8">
               <input type="text" placeholder="" name="post_code" class="form-control" [(ngModel)]="customer_info.postcode" #post_code="ngModel"
                 required>
             </div>
-            <div *ngIf="userForm.submitted && !post_code.valid" class="help-block">Post Code is required</div>
           </div>
         </fieldset>
         <hr class="dotted tall">
@@ -242,16 +200,6 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td class="title">
-                                    Manage Staff Users
-                                  </td>
-                                  <td class="title"><input type="checkbox" name="create_staff" [checked]="staffPermission.create" (change)="staffPermission.create = !staffPermission.create"
-                                    /></td>
-                                  <td class="title"><input type="checkbox" name="edit_staff" [checked]="staffPermission.edit" (change)="staffPermission.edit = !staffPermission.edit"></td>
-                                  <td class="title"><input type="checkbox" name="delete_staff" [checked]="staffPermission.delete" (change)="staffPermission.delete = !staffPermission.delete"></td>
-                                  <td class="title"><input type="checkbox" name="view_staff" [checked]="staffPermission.view" (change)="staffPermission.view = !staffPermission.view"></td>
-                                </tr>
                                 <tr>
                                   <td class="title">
                                     Manage Customer Users
@@ -343,45 +291,36 @@
                   </select>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group"   [ngClass]="{ 'has-error' : password.invalid && password.touched }">
             <label class="col-md-3 control-label" for="profilePassword">Password</label>
             <div class="col-md-8">
               <input type="password" id="profilePassword" placeholder="" class="form-control" name="password" [(ngModel)]="customer.password"
                 #password="ngModel" required>
             </div>
-            <div *ngIf="userForm.submitted && !password.valid" class="help-block">Pasword is required</div>
           </div>
-          <div class="form-group">
+          <div class="form-group"   [ngClass]="{ 'has-error' : confirmpassword.invalid && confirmpassword.touched }">
             <label class="col-md-3 control-label" for="profileRepeatPassword">Confirm Password</label>
             <div class="col-md-8">
               <input type="password" id="profileRepeatPassword" placeholder="" class="form-control" name="confirmpassword" [(ngModel)]="customer.confirm_password"
                 #confirmpassword="ngModel" required>
             </div>
-            <div *ngIf="(customer.password !== customer.confirm_password) && (confirmpassword.dirty|| confirmpassword.touched )" class=" col-lg-5 col-md-5  col-lg-offset-2 col-md-offset-3 alert alert-danger">
-              <div>The passwords entered do not match</div>
-            </div>
           </div>
         </fieldset>
         <h4 class="mb-xlg">Additional Information</h4>
         <fieldset class="mb-xl">
-          <div class="form-group">
+          <div class="form-group"   [ngClass]="{ 'has-error' : customer_type.invalid && customer_type.touched }">
             <label class="col-md-3 control-label" for="profileCustomerType">Customer Type</label>
             <div class="col-md-8">
               <input type="text" id="profileCustomerType" placeholder="Input Customer Type" class="form-control" [(ngModel)]="customer_info.customer_type"
                 name="customer_type" #customer_type="ngModel" required>
             </div>
-            <div *ngIf="userForm.submitted && !customer_type.valid" class="help-block">Customer Type is required</div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="{ 'has-error' : account_email.invalid && account_email.touched }">
             <label class="col-md-3 control-label" for="profileAccountEmail">Accounts Email</label>
             <div class="col-md-8">
               <input type="email" id="profileAccountEmail" placeholder="Enter Account Email" class="form-control" [(ngModel)]="customer.account_email"
                 name="account_email" [email]="true" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #account_email="ngModel"
                 required>
-            </div>
-            <div *ngIf="userForm.submitted && !account_email.valid" class="help-block">Account Email is required</div>
-            <div *ngIf="account_email.errors && account_email.errors.pattern">
-              Email is invalid
             </div>
           </div>
         </fieldset>

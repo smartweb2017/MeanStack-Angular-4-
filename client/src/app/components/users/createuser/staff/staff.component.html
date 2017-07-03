@@ -5,26 +5,15 @@
          <div class="well">
             <div class="panel-body">
                <form class="form-horizontal group-border stripped" name="form" #userForm="ngForm" (ngSubmit)="onSubmit()">
-               <div class="form-group">
+               <div class="form-group" [ngClass]="{ 'has-error' : username.invalid && username.touched }">
                   <label class="col-lg-2 col-md-3 control-label">Name</label>
                   <div class="col-lg-5 col-md-5">
                      <input type="text" name="username" placeholder="Enter Your UserName" minlength="4" maxlength="24" class="form-control" [(ngModel)]="staff.username"
                      #username="ngModel" required>
                   </div>
-                  <div *ngIf="username.errors && (username.dirty || username.touched) && !username.valid" class="col-lg-5 col-md-5 col-lg-offset-2 col-md-offset-3 alert alert-danger">
-                     <div [hidden]="!username.errors.required">
-                        Name is required
-                     </div>
-                     <div [hidden]="!username.errors.minlength">
-                        Name must be at least 4 characters long.
-                     </div>
-                     <div [hidden]="!username.errors.maxlength">
-                        Name cannot be more than 24 characters long.
-                     </div>
-                  </div>
                </div>
                
-               <div class="form-group">
+               <div class="form-group" [ngClass]="{ 'has-error' : company.invalid && company.touched }">
                   <label class="col-lg-2 col-md-3 control-label">Company</label>
                   <div class="col-lg-3 col-md-3">
                      <select class="fancy-select form-control" name="company" [(ngModel)]="staff.company" required #company="ngModel">
@@ -34,9 +23,6 @@
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#companyModal" *ngIf="user.accounttype==='super'"> Add A Company</button>
                      <ng-container *ngIf="user.accounttype==='staff' || user.accounttype==='customer'">
                         <ng-container *ngIf="user.role">
-                            <ng-container>
-                                
-                            </ng-container>
                             <button type="button" *ngIf="user.role.company.create" class="btn btn-info" data-toggle="modal" data-target="#companyModal"> Add A Company</button>
                         </ng-container>
                         <ng-container *ngIf="user.special_permissions">
@@ -77,28 +63,23 @@
                         </div>
                      </div>
                   </div>
-                  <div *ngIf="company.errors && company.touched" class=" col-lg-5 col-md-5  col-lg-offset-2 col-md-offset-3 alert alert-danger">
-                     <div [hidden]="!company.errors.required">Company is required</div>
-                  </div>
+                  
                </div>
-               <div class="form-group">
+               <div class="form-group"  [ngClass]="{ 'has-error' : email.invalid && email.touched }">
                   <label class="col-lg-2 col-md-3 control-label">Email</label>
                   <div class="col-lg-5 col-md-5">
                      <input type="email" name="email" placeholder="Enter email" class="form-control" [(ngModel)]="user_info.email" #email="ngModel"
                      [email]="true" required>
                   </div>
-                  <div *ngIf="email.errors && email.touched" class=" col-lg-5 col-md-5 col-lg-offset-2 col-md-offset-3 alert alert-danger">
-                     <div [hidden]="!email.errors.required">Email is required</div>
-                  </div>
                </div>
-               <div class="form-group">
+               <div class="form-group"  [ngClass]="{ 'has-error' : phone.invalid && phone.touched }">
                   <label class="col-lg-2 col-md-3 control-label">Phone</label>
                   <div class="col-lg-5 col-md-5">
                      <input type="text"  name="phone" placeholder="Phone number" class="form-control"
                      [(ngModel)]="user_info.phone" #phone="ngModel" required>
                   </div>
                </div>
-               <div class="form-group">
+               <div class="form-group"  [ngClass]="{ 'has-error' : mobile.invalid && mobile.touched }">
                   <label class="col-lg-2 col-md-3 control-label">Mobile</label>
                   <div class="col-lg-5 col-md-5">
                      <input type="text"  name="mobile" placeholder="Phone number" class="form-control"
@@ -236,7 +217,7 @@
                   </div>
                   
                </div>
-               <div class="form-group">
+               <div class="form-group"   [ngClass]="{ 'has-error' : parent.invalid && parent.touched }">
                 <label class=" col-lg-2 col-md-3 control-label" for="profileParent">Parent</label>
                 <div class="col-md-4">
                     <select class="fancy-select form-control" id="profileParent" name="parent" [(ngModel)]="staff.parent"
@@ -246,24 +227,18 @@
                     </select>
                 </div>
                 </div>
-               <div class="form-group">
+               <div class="form-group"   [ngClass]="{ 'has-error' : password.invalid && password.touched }">
                   <label class="col-lg-2 col-md-3 control-label">Password</label>
                   <div class="col-lg-3 col-md-3">
                      <input type="Password" name="password" placeholder="" class="form-control" [(ngModel)]="staff.password" #password="ngModel"
                      required>
                   </div>
-                  <div *ngIf="password.errors && password.touched" class=" col-lg-5 col-md-5  col-lg-offset-2 col-md-offset-3 alert alert-danger">
-                     <div>Please enter Password</div>
-                  </div>
                </div>
-               <div class="form-group">
+               <div class="form-group"  [ngClass]="{ 'has-error' : confirmPassword.invalid && confirmPassword.touched }">
                   <label class="col-lg-2 col-md-3 control-label">Confirm Password</label>
                   <div class="col-lg-3 col-md-3">
                      <input type="Password" name="confirmPassword" placeholder="" class="form-control" [(ngModel)]="staff.confirmPassword" #confirmPassword="ngModel"
                      required>
-                  </div>
-                  <div *ngIf="(staff.password !== staff.confirmPassword) &&(confirmPassword.dirty|| confirmPassword.touched )" class=" col-lg-5 col-md-5  col-lg-offset-2 col-md-offset-3 alert alert-danger">
-                     <div>The passwords entered do not match</div>
                   </div>
                </div>
                <div class="col-md-5">

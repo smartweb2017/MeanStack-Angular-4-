@@ -51,8 +51,6 @@ export class CustomerComponent implements OnInit {
 
   customerPermission: any;
 
-  staffPermission: any;
-
   storePermission: any;
 
   orderPermission: any;
@@ -105,6 +103,8 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
 
+    this.roles = [];
+
     this.user = JSON.parse(localStorage.getItem('user'));
 
     this.newCompany = {
@@ -112,12 +112,7 @@ export class CustomerComponent implements OnInit {
       status: ''
     };
 
-    this.staffPermission = {
-      create: '',
-      edit: '',
-      delete: '',
-      view: ''
-    };
+    
 
     this.customerPermission = {
       create: '',
@@ -218,7 +213,9 @@ export class CustomerComponent implements OnInit {
     this.companyService.getAllCompanies().then((res) => {
       this.currentCompanies = [];
       for(let i = 0; i<Object.keys(res).length; i++ ) {
-        this.currentCompanies.push(res[i]);
+        if(res[i].status === true) {
+          this.currentCompanies.push(res[i]);
+        }        
       }
     }, (err) => {
       console.log(err);
@@ -229,7 +226,12 @@ export class CustomerComponent implements OnInit {
 
     this.roleService.getAllRoles().then((res) => {
 
-      this.roles = res;
+     
+      for( let i=0; i<Object.keys(res).length; i++) {
+        if(res[i].status === true) {
+          this.roles.push(res[i]);
+        }
+      }
 
     }, (err) => {
 
@@ -370,8 +372,6 @@ export class CustomerComponent implements OnInit {
   }
 
   savePermissions() {
-    this.customer.special_permissions.staff = this.staffPermission;
-
     this.customer.special_permissions.customer = this.customerPermission;
 
     this.customer.special_permissions.store = this.storePermission;

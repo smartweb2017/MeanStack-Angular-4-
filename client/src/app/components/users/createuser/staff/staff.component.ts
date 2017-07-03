@@ -71,6 +71,8 @@ export class StaffComponent implements OnInit {
 
   ngOnInit() {
 
+    this.roles = [];
+
     this.user = JSON.parse(localStorage.getItem('user'));
 
     this.newCompany = {
@@ -167,7 +169,9 @@ export class StaffComponent implements OnInit {
     this.companyService.getAllCompanies().then((res) => {
       this.currentCompanies = [];
       for(let i = 0; i<Object.keys(res).length; i++ ) {
-        this.currentCompanies.push(res[i]);
+        if(res[i].status === true) {
+          this.currentCompanies.push(res[i]);
+        }        
       }
     }, (err) => {
       console.log(err);
@@ -176,9 +180,15 @@ export class StaffComponent implements OnInit {
   //Get Current Roles
   getAllRoles() {
     this.roleService.getAllRoles().then((res) => {
-      this.roles = res;
+      for( let i=0; i<Object.keys(res).length; i++) {
+        if(res[i].status === true) {
+          this.roles.push(res[i]);
+        }
+      }
     }, (err) => {
+
       console.log(err);
+
     });
   }
 

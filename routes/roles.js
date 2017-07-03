@@ -80,7 +80,7 @@ router.post("/reactivate", (req, res, next) => {
     Role.findByIdAndUpdate(
       req.body[i], {
         $set: {
-          status: false
+          status: true
         }
       },
       (err, user) => {

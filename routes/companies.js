@@ -81,7 +81,7 @@ router.post("/reactivate", (req, res, next) => {
     Company.findByIdAndUpdate(
       req.body[i], {
         $set: {
-          status: false
+          status: true
         }
       },
       (err, company) => {

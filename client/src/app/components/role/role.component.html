@@ -77,18 +77,18 @@
 <div class="row">
   <div class="col-sm-12 col-md-12">
     <div class="form-group" *ngIf=" user.accounttype === 'super'">
-      <button type="button" id="button-filter" class="btn btn-primary pull-right" (click)="deleteRoles()"><i class="fa fa-delete"></i> Delete Selected</button>
-      <button type="button" id="button-filter" class="btn btn-primary pull-right" (click)="deactivateRoles()"><i class="fa fa-delete"></i> Deactivate Selected</button>
-      <button  type="button" id="button-filter" class="btn btn-primary pull-right" (click)="reactivateRoles()"><i class="fa fa-delete"></i> Reactivate Selected</button>
+      <button type="button" id="button-filter" class="btn btn-primary " (click)="deleteRoles()"><i class="fa fa-delete"></i> Delete Selected</button>
+      <button type="button" id="button-filter" class="btn btn-primary " (click)="deactivateRoles()"><i class="fa fa-delete"></i> Deactivate Selected</button>
+      <button  type="button" id="button-filter" class="btn btn-primary " (click)="reactivateRoles()"><i class="fa fa-delete"></i> Reactivate Selected</button>
     </div>
     <div class="form-group" *ngIf=" user.accounttype === 'staff' || user.accounttype === 'customer' ">
     <ng-container *ngIf="user.role">
-      <button type="button" *ngIf="user.role.role.delete" id="button-filter" class="btn btn-primary pull-right" (click)="deactivateRoles()"><i class="fa fa-delete"></i> Deactivate Selected</button>
-      <button *ngIf="user.role.role.delete" type="button" id="button-filter" class="btn btn-primary pull-right" (click)="reactivateRoles()"><i class="fa fa-delete"></i> Reactivate Selected</button>
+      <button type="button" *ngIf="user.role.role.delete" id="button-filter" class="btn btn-primary " (click)="deactivateRoles()"><i class="fa fa-delete"></i> Deactivate Selected</button>
+      <button *ngIf="user.role.role.delete" type="button" id="button-filter" class="btn btn-primary " (click)="reactivateRoles()"><i class="fa fa-delete"></i> Reactivate Selected</button>
     </ng-container>
     <ng-container *ngIf="user.special_permissions">
-       <button type="button" *ngIf="user.special_permissions.role.delete" id="button-filter" class="btn btn-primary pull-right" (click)="deactivateRoles()"><i class="fa fa-delete"></i> Deactivate Selected</button>
-      <button *ngIf="user.special_permissions.role.delete" type="button" id="button-filter" class="btn btn-primary pull-right" (click)="reactivateRoles()"><i class="fa fa-delete"></i> Reactivate Selected</button>
+       <button type="button" *ngIf="user.special_permissions.role.delete" id="button-filter" class="btn btn-primary " (click)="deactivateRoles()"><i class="fa fa-delete"></i> Deactivate Selected</button>
+      <button *ngIf="user.special_permissions.role.delete" type="button" id="button-filter" class="btn btn-primary " (click)="reactivateRoles()"><i class="fa fa-delete"></i> Reactivate Selected</button>
     </ng-container>      
     </div>
   </div>

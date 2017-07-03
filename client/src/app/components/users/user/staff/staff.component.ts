@@ -55,7 +55,7 @@ export class StaffEditComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = JSON.parse(localStorage.getItem('user'));
-
+    this.roles = [];
     this.staff = this.user.user;
     this.user_info = this.user.user['user_info'];
     this.newCompany = {
@@ -146,7 +146,9 @@ export class StaffEditComponent implements OnInit {
       res => {
         this.currentCompanies = [];
         for (let i = 0; i < Object.keys(res).length; i++) {
-          this.currentCompanies.push(res[i]);
+          if(res[i].status === true) {
+            this.currentCompanies.push(res[i]);
+          }          
         }
       },
       err => {
@@ -156,23 +158,25 @@ export class StaffEditComponent implements OnInit {
   }
   //Get Current Roles
   getAllRoles() {
-    this.roleService.getAllRoles().then(
-      res => {
-        this.roles = res;
-      },
-      err => {
-        console.log(err);
+    this.roleService.getAllRoles().then((res) => {
+      for( let i=0; i<Object.keys(res).length; i++) {
+        if(res[i].status === true) {
+          this.roles.push(res[i]);
+        }
       }
-    );
+
+    }, (err) => {
+
+      console.log(err);
+
+    });
   }
   onSubmit() {
     this.staff['user_info'] = this.user_info;
     this.staff['status'] = 'active';
     this.staff['accounttype'] = 'staff';
     if (this.staff.role) {
-      console.log('delete special permissions');
       delete this.staff.special_permissions;
-      console.log(this.staff);
     }
     this.userService.updateUser(this.staff['id'], this.staff).then(
       result => {

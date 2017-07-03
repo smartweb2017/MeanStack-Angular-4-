@@ -40,17 +40,21 @@ export class LoginComponent implements OnInit {
           if (!this.user.role) {
             if (!this.user.special_permissions) {
               this.router.navigate(['/blank']);
-            } else {
+            } else { 
               this.router.navigate([
                 '/' + this.user.special_permissions.home_url,
               ]);
             }
           } else {
-            if (!this.user.role.home_url) {
-              this.router.navigate(['/dashboard']);
+            if(this.user.role.status !== true) {
+              this.router.navigate(['/blank']);
             } else {
-              this.router.navigate(['/' + this.user.role.home_url]);
-            }
+                if (!this.user.role.home_url) {
+                this.router.navigate(['/dashboard']);
+              } else {
+                this.router.navigate(['/' + this.user.role.home_url]);
+              }
+            }            
           }
         }
 

@@ -48,21 +48,29 @@ export class UsersComponent implements OnInit {
   }
   getAllUsers() {
     this.usersService.getAllUsers().then(
-      res => {
+      (res) => {
         this.users = res;
         this.temp = this.users;
         if (this.user.accounttype === 'customer') {
-          for (let i = 0; i < this.users.length; i++) {
-            for (let j = 0; j < this.user.child.length; i++) {
-              if (this.users[i].username === this.user.child[j]) {
-                this.childs.push(this.users[i]);
+          this.usersService.getUserDetails(this.user.id).then(
+            (res) => {
+              this.user.child = res['user'].child;
+              for(let i=0; i<this.user.child.length; i++) {
+                for( let j=0; j<this.users.length; j++) {
+                  if(this.users[j].username === this.user.child[i]) {
+                    this.childs.push(this.users[j]);
+                  }
+                }
               }
+             
+            },
+            (error) => {
+              console.log(error);
             }
-          }
-        } else {
-        }
+          );          
+        } 
       },
-      err => {
+      (err) => {
         console.log(err);
       }
     );

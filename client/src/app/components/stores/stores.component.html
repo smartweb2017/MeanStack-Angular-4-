@@ -81,6 +81,7 @@
                 <td class="title"><a [routerLink]="['/store', item._id]">{{ item.store_title }}</a></td>
                 <td class="title">{{ item.key_contact }}</td>
                 <td class="title">{{ item.store_info.city}}</td>
+                <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
               </ng-container>
               <ng-container *ngIf="user.accounttype === 'staff' || user.accounttype === 'customer'">
                 <td class="title">

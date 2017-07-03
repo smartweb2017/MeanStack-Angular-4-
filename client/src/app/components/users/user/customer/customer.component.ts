@@ -39,9 +39,7 @@ export class CustomerEditComponent implements OnInit {
   currentCompanies: any;
   
   customerPermission: any ;
-
-  staffPermission: any ;
-
+  
   storePermission: any ;
 
   orderPermission: any ;
@@ -119,14 +117,21 @@ export class CustomerEditComponent implements OnInit {
     this.address = this.customer_info.address;
     this.cities = this.regionData[this.customer.customer_info.region];
     this.childs = this.customer.child;
-    this.staffPermission = {
-      create: '',
-      edit: '',
-      delete: '',
-      view: ''
-    };
-  
-    this.customerPermission = {
+    this.roles = [];
+    this.newCompany = {
+      name: '',
+      status: ''
+    }
+    if(this.customer.special_permissions) {
+      this.companyPermission = this.customer.special_permissions.company;
+      this.customerPermission = this.customer.special_permissions.customer;
+      this.orderPermission = this.customer.special_permissions.order;
+      this.storePermission = this.customer.special_permissions.store;
+      this.rolePermission = this.customer.special_permissions.role;      
+      this.home_url = this.customer.special_permissions.home_url; 
+      this.display_dashboard = this.customer.special_permissions.display_dashboard;
+    } else {
+      this.customerPermission = {
       create: '',
       edit: '',
       delete: '',
@@ -160,21 +165,7 @@ export class CustomerEditComponent implements OnInit {
       delete: '',
       view: ''
     };
-
-    this.newCompany = {
-      name: '',
-      status: ''
     }
-    if(this.customer.special_permissions) {
-      this.companyPermission = this.customer.special_permissions.company;
-      this.staffPermission = this.customer.special_permissions.staff;
-      this.customerPermission = this.customer.special_permissions.customer;
-      this.orderPermission = this.customer.special_permissions.order;
-      this.storePermission = this.customer.special_permissions.store;
-      this.rolePermission = this.customer.special_permissions.role;      
-      this.home_url = this.customer.special_permissions.home_url; 
-      this.display_dashboard = this.customer.special_permissions.display_dashboard;
-    } 
     
 
     this.getAllCompanies();
@@ -186,7 +177,7 @@ export class CustomerEditComponent implements OnInit {
   getAllUsers() {
     this.userService.getAllUsers().then((res) => {
       for (let i = 0; i < Object.keys(res).length; i++) {
-        if (res[i].accounttype === 'customer' && res[i].username !== this.user.username ) {
+        if (res[i].accounttype === 'customer' && res[i].username !== this.customer.username ) {
           this.users.push(res[i].username);
         }
       }
@@ -201,7 +192,9 @@ export class CustomerEditComponent implements OnInit {
     this.companyService.getAllCompanies().then((res) => {
       this.currentCompanies = [];
       for(let i = 0; i<Object.keys(res).length; i++ ) {
-        this.currentCompanies.push(res[i]);
+        if(res[i].status === true) {
+          this.currentCompanies.push(res[i]);
+        }        
       }
     }, (err) => {
       console.log(err);
@@ -210,9 +203,16 @@ export class CustomerEditComponent implements OnInit {
   //Get Current Roles
   getAllRoles() {
     this.roleService.getAllRoles().then((res) => {
-      this.roles = res;
+      for( let i=0; i<Object.keys(res).length; i++) {
+        if(res[i].status === true) {
+          this.roles.push(res[i]);
+        }
+      }
+
     }, (err) => {
+
       console.log(err);
+
     });
   }
   //Select Region
@@ -233,7 +233,9 @@ export class CustomerEditComponent implements OnInit {
     if (this.photo) {
       this.uploadPhoto();
     }
-    console.log(this.customer);
+    if(this.customer.role) {
+      delete this.customer.special_permissions;
+    }
     this.userService.updateUser(this.customer.id, this.customer).then((result) => {
       this.router.navigate(['/users']);
     }, (err) => {
@@ -318,7 +320,6 @@ export class CustomerEditComponent implements OnInit {
   }
 
   savePermissions() {
-    this.customer.special_permissions.staff = this.staffPermission;
 
     this.customer.special_permissions.customer = this.customerPermission;
 

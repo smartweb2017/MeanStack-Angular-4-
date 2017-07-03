@@ -67,6 +67,7 @@ export class StoresComponent implements OnInit {
     this.storeService.getAllStores().then((res) => {
 
       this.stores = res;
+      
 
       this.filteredStores = this.stores;
 

@@ -53,11 +53,12 @@ export class StoreComponent implements OnInit {
       this.store = res;
       this.store_info = res['store_info'];
       this.address = this.store_info['address'];
+      this.cities = this.regionData[this.store_info.region];
     }, (err) => {
       console.log(err);
     });
   }
-    cancel(){
+  cancel(){
   	this.router.navigate(['/stores']);
   }
   onSubmit() {
