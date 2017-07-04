@@ -29,7 +29,7 @@
               <div class="col-md-5">
                 <select class="fancy-select form-control" id="profileCompany" name="company" [(ngModel)]="customer.company" #company="ngModel">
                       
-                     <option *ngFor="let c of currentCompanies" [value]="c.name">{{c.name}}</option>
+                     <option *ngFor="let c of currentCompanies" [value]="c._id">{{c.name}}</option>
                      </select>
               </div>
               <div class="col-md-4" *ngIf="user.accounttype==='super'">
@@ -257,13 +257,13 @@
                         <label for="" class="col-md-5 control-label">Home Screen</label>
                         <div class="col-md-7">
                           <select class="form-control m-b" name="home_url" [(ngModel)]="home_url">
-                                              <option value=""></option>
-                                              <option value="dashboard">Dashboard</option>
-                                              <option value="users">Users</option>
-                                              <option value="roles">User Roles</option>
-                                              <option value="stores">Stores</option>
-                                              <option value="orders">Orders</option>
-                                          </select>
+                              <option value=""></option>
+                              <option value="dashboard">Dashboard</option>
+                              <option value="users">Users</option>
+                              <option value="roles">User Roles</option>
+                              <option value="stores">Stores</option>
+                              <option value="orders">Orders</option>
+                          </select>
                         </div>
                       </div>
                       <div class="col-sm-6">
@@ -287,7 +287,7 @@
             <div class="col-md-8">
               <select class="fancy-select form-control" id="profileParent" name="parent" [(ngModel)]="customer.parent" #parent="ngModel">
                   <option value=""></option>
-                  <option *ngFor = "let p of users" [value]="p">{{ p }}</option>
+                  <option *ngFor = "let p of users" [value]="p._id">{{ p.username }}</option>
                   </select>
             </div>
           </div>

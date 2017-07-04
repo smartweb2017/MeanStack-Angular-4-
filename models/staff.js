@@ -10,6 +10,7 @@ const StaffSchema = mongoose.Schema({
     },
     role: String,
     parent: String,
+    key_contact: String,
     child: []
 });
 

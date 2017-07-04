@@ -1,27 +1,13 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-import {
-  EmailValidator
-} from '@angular/forms';
-import {
-  Router
-} from '@angular/router';
-import {
-  RoleService
-} from '../../../../services/role.service';
-import {
-  CompanyService
-} from '../../../../services/company.service';
-import {
-  UsersService
-} from '../../../../services/users.service';
-import {
-  Staff
-} from './staff.interface';
+import { Component, OnInit } from '@angular/core';
+import { EmailValidator } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RoleService } from '../../../../services/role.service';
+import { CompanyService } from '../../../../services/company.service';
+import { UsersService } from '../../../../services/users.service';
+import { Staff } from './staff.interface';
 
-import MaskedInput from '@msafi/angular2-text-mask';
+declare var $: any;
+declare var toastr: any;
 
 
 @Component({
@@ -72,7 +58,7 @@ export class StaffComponent implements OnInit {
   ngOnInit() {
 
     this.roles = [];
-
+    //Get Current Logged in User
     this.user = JSON.parse(localStorage.getItem('user'));
 
     this.newCompany = {
@@ -136,10 +122,21 @@ export class StaffComponent implements OnInit {
       delete: '',
       view: ''
     };
-
+    //Get All Companies
     this.getAllCompanies();
+    //Get All Roles
     this.getAllRoles();
+    //Get All Users
     this.getAllUsers();
+
+    //Init UI elements 
+    toastr.options = {
+        "debug": false,
+        "newestOnTop": false,
+        "positionClass": "toast-bottom-right",
+        "closeButton": true,
+        "progressBar": true
+    };
   }
 
   //Get All Users
@@ -151,7 +148,7 @@ export class StaffComponent implements OnInit {
 
         if (res[i].accounttype === 'staff' ) {
 
-          this.users.push(res[i].username);
+          this.users.push(res[i]);
 
         }
 
@@ -200,7 +197,12 @@ export class StaffComponent implements OnInit {
     this.staff['status'] = 'active';
     this.staff['accounttype'] = 'staff';
     this.userService.createNewUser(this.staff).then((result) => {
-      this.router.navigate(['/users']);
+      if(!result['success']) {
+        toastr.error('Sorry, you were unable to create a user because the username is already being used please try again');
+      } else {
+        toastr.success('Success - New Cutomer Created!!!');
+        this.router.navigate(['/users']);
+      } 
     }, (err) => {
       console.log(err);
     });
@@ -212,11 +214,9 @@ export class StaffComponent implements OnInit {
 
 
   createCompany () {
-    this.currentCompanies.push(this.newCompany.name);
-    this.staff.company = this.newCompany.name;
     this.newCompany.status = 'active';
     this.companyService.createCompany(this.newCompany).then((res) => {
-      this.getAllCompanies();
+      this.currentCompanies.push(res);
     }, (err) => {
       console.log(err);
     });

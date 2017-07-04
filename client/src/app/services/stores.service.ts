@@ -9,7 +9,7 @@ export class StoresService {
 
   getAllStores() {
     return new Promise((resolve, reject) => {
-      this.http.get('stores')
+      this.http.get('/stores')
         .map(res => res.json())
         .subscribe(res => {
           resolve(res);

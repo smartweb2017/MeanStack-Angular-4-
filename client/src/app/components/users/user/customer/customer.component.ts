@@ -132,42 +132,40 @@ export class CustomerEditComponent implements OnInit {
       this.display_dashboard = this.customer.special_permissions.display_dashboard;
     } else {
       this.customerPermission = {
-      create: '',
-      edit: '',
-      delete: '',
-      view: ''
-    };
-  
-    this.storePermission = {
-      create: '',
-      edit: '',
-      delete: '',
-      view: ''
-    };
-  
-    this.orderPermission = {
-      create: '',
-      edit: '',
-      delete: '',
-      view: ''
-    };
-  
-    this.rolePermission = {
-      create: '',
-      edit: '',
-      delete: '',
-      view: ''
-    };
-  
-    this.companyPermission = {
-      create: '',
-      edit: '',
-      delete: '',
-      view: ''
-    };
-    }
+        create: '',
+        edit: '',
+        delete: '',
+        view: ''
+      };
     
-
+      this.storePermission = {
+        create: '',
+        edit: '',
+        delete: '',
+        view: ''
+      };
+    
+      this.orderPermission = {
+        create: '',
+        edit: '',
+        delete: '',
+        view: ''
+      };
+    
+      this.rolePermission = {
+        create: '',
+        edit: '',
+        delete: '',
+        view: ''
+      };
+    
+      this.companyPermission = {
+        create: '',
+        edit: '',
+        delete: '',
+        view: ''
+      };
+    }
     this.getAllCompanies();
     this.getAllRoles();
     this.getAllUsers();
@@ -178,10 +176,18 @@ export class CustomerEditComponent implements OnInit {
     this.userService.getAllUsers().then((res) => {
       for (let i = 0; i < Object.keys(res).length; i++) {
         if (res[i].accounttype === 'customer' && res[i].username !== this.customer.username ) {
-          this.users.push(res[i].username);
+          this.users.push(res[i]);
         }
       }
-      
+      let temp = [];
+      for( let j=0; j< this.users.length; j++) {
+        for (let i =0; i< this.childs.length; i++) {
+          if( this.users[j]._id == this.childs[i]) {
+            temp.push(this.users[j]);
+          }
+        }
+      }
+      this.childs = temp;
     }, (err) => {
       console.log(err);
     });
@@ -309,11 +315,9 @@ export class CustomerEditComponent implements OnInit {
   }
 
   createCompany () {
-    this.currentCompanies.push(this.newCompany.name);
-    this.customer.company = this.newCompany.name;
     this.newCompany.status = 'active';
     this.companyService.createCompany(this.newCompany).then((res) => {
-      this.getAllCompanies();
+      this.currentCompanies.push(res);
     }, (err) => {
       console.log(err);
     });

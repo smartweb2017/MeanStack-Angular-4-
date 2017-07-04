@@ -11,7 +11,7 @@ const StoreSchema = mongoose.Schema({
     },
     parent: String,
     status: Boolean,
-    child: String,
+    child: [],
     key_contact: String,
     store_info: {}
 

@@ -42,6 +42,8 @@ export class StaffEditComponent implements OnInit {
 
   users = [];
 
+  childs = [];
+
   currentUser: any;
 
   public modalValid = true;
@@ -58,6 +60,7 @@ export class StaffEditComponent implements OnInit {
     this.roles = [];
     this.staff = this.user.user;
     this.user_info = this.user.user['user_info'];
+    this.childs = this.user.user['child'];
     this.newCompany = {
       name: '',
       status: '',
@@ -130,7 +133,7 @@ export class StaffEditComponent implements OnInit {
             res[i].accounttype === 'staff' &&
             res[i].username !== this.user.username
           ) {
-            this.users.push(res[i].username);
+            this.users.push(res[i]);
           }
         }
       },
@@ -193,12 +196,10 @@ export class StaffEditComponent implements OnInit {
   }
 
   createCompany() {
-    this.currentCompanies.push(this.newCompany.name);
-    this.staff.company = this.newCompany.name;
     this.newCompany.status = 'active';
     this.companyService.createCompany(this.newCompany).then(
       res => {
-        this.getAllCompanies();
+        this.currentCompanies.push(res);
       },
       err => {
         console.log(err);

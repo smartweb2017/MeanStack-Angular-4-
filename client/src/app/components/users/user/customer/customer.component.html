@@ -44,7 +44,7 @@
               <div class="col-md-4">
                 <select class="fancy-select form-control" id="profileCompany" name="company" [(ngModel)]="customer.company" required #company="ngModel">
                         <option value=""></option>
-                        <option *ngFor="let c of currentCompanies" [value]="c.name">{{c.name}}</option>
+                        <option *ngFor="let c of currentCompanies" [value]="c._id">{{c.name}}</option>
                     </select>
               </div>
               <div class="col-md-4" *ngIf="currentUser.accounttype==='super'">
@@ -321,7 +321,7 @@
             <div class="col-md-8">
               <select class="fancy-select form-control" id="profileParent" name="parent" [(ngModel)]="customer.parent" #parent="ngModel">
                     <option value="" ></option>
-                    <option *ngFor = "let p of users" [value]="p">{{ p }}</option>
+                    <option *ngFor = "let p of users" [value]="p._id">{{ p.username }}</option>
                 </select>
             </div>
           </div>
@@ -369,7 +369,7 @@
             <div class="col-md-8">
               <select class="fancy-select form-control" id="key_contact" name="key_contact" [(ngModel)]="customer_info.key_contact" #company="ngModel">
                   <option value="" ></option>
-                  <option *ngFor="let c of childs" [value]="c">{{c}}</option>
+                  <option *ngFor="let c of childs" [value]="c._id">{{c.username}}</option>
               </select>
             </div>
           </div>

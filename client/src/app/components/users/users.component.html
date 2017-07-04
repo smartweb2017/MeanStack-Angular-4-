@@ -153,20 +153,27 @@
                         </tr>
                     </thead>
                     <tbody *ngIf="user.accounttype === 'super'">
-                        <tr *ngFor="let item of temp">
-                            <ng-container *ngIf="item.accounttype !== 'super'">
+                        <tr *ngFor="let item of temp  ">
+                            <ng-container *ngFor="let company of currentCompanies">
+                            <ng-container *ngIf="item.accounttype !=='super'">
                                 <td class="title">
                                     <input type="checkbox" name="select" value="{{item._id}}" (change)="selectElement($event)" />
                                 </td>
                                 <td class="title"><a [routerLink]="['/user', item._id]">{{ item.username }}</a></td>
-                                <td class="title">{{ item.company }}</td>
+                                <td class="title">
+                                    <ng-container *ngIf="item.company === company._id">
+                                        {{company.name}}
+                                    </ng-container>
+                                </td>
                                 <td class="title">{{ item.accounttype }}</td>
                                 <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
+                            </ng-container>
                             </ng-container>
                         </tr>
                     </tbody>
                     <tbody *ngIf="user.accounttype === 'staff'">
                         <tr *ngFor="let item of temp">
+                            <ng-container *ngFor="let company of currentCompanies">
                             <ng-container *ngIf="user.role">
                                 <ng-container *ngIf="user.role.customer.create || user.role.customer.edit || user.role.customer.delete || user.role.customer.view ">
                                     <ng-container *ngIf=" user.role.staff.create || user.role.staff.edit|| user.role.staff.delete || user.role.staff.view ">
@@ -188,7 +195,11 @@
                                                     </ng-container>
                                                 </ng-container>
                                             </td>
-                                            <td class="title">{{ item.company }}</td>
+                                            <td class="title">
+                                                <ng-container *ngIf="item.company === company._id">
+                                                    {{company.name}}
+                                                </ng-container>
+                                            </td>
                                             <td class="title">{{ item.accounttype }}</td>
                                             <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
                                         </ng-container>
@@ -204,7 +215,11 @@
                                                     {{ item.username }}
                                                 </ng-container>
                                             </td>
-                                            <td class="title">{{ item.company }}</td>
+                                            <td class="title">
+                                                <ng-container *ngIf="item.company === company._id">
+                                                    {{company.name}}
+                                                </ng-container>
+                                            </td>
                                             <td class="title">{{ item.accounttype }}</td>
                                             <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
                                         </ng-container>
@@ -221,7 +236,11 @@
                                                 {{ item.username }}
                                             </ng-container>
                                         </td>
-                                        <td class="title">{{ item.company }}</td>
+                                        <td class="title">
+                                            <ng-container *ngIf="item.company === company._id">
+                                                {{company.name}}
+                                            </ng-container>
+                                        </td>
                                         <td class="title">{{ item.accounttype }}</td>
                                         <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
                                     </ng-container>
@@ -248,7 +267,11 @@
                                                     </ng-container>
                                                 </ng-container>
                                             </td>
-                                            <td class="title">{{ item.company }}</td>
+                                            <td class="title">
+                                                <ng-container *ngIf="item.company === company._id">
+                                                    {{company.name}}
+                                                </ng-container>
+                                            </td>
                                             <td class="title">{{ item.accounttype }}</td>
                                             <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
                                         </ng-container>
@@ -272,7 +295,11 @@
                                                     </ng-container>
                                                 </ng-container>
                                             </td>
-                                            <td class="title">{{ item.company }}</td>
+                                            <td class="title">
+                                                <ng-container *ngIf="item.company === company._id">
+                                                    {{company.name}}
+                                                </ng-container>
+                                            </td>
                                             <td class="title">{{ item.accounttype }}</td>
                                             <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
                                         </ng-container>
@@ -289,16 +316,22 @@
                                                 {{ item.username }}
                                             </ng-container>
                                         </td>
-                                        <td class="title">{{ item.company }}</td>
+                                        <td class="title">
+                                            <ng-container *ngIf="item.company === company._id">
+                                                {{company.name}}
+                                            </ng-container>
+                                        </td>
                                         <td class="title">{{ item.accounttype }}</td>
                                         <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
                                     </ng-container>
                                 </ng-container>
                             </ng-container>
+                            </ng-container>
                         </tr>
                     </tbody>
                     <tbody *ngIf=" user.accounttype === 'customer'">
                         <tr *ngFor="let item of childs">
+                            <ng-container *ngFor="let company of currentCompanies">
                             <ng-container *ngIf="(item.accounttype == user.accounttype) && (item.username !== user.username) && (item.username !== user.parent)">
                                 <td class="title">
                                     <input type="checkbox" value="{{item._id}}" (change)="selectElement($event)" />
@@ -315,9 +348,14 @@
                                         <ng-container *ngIf="!user.special_permissions.customer.edit">{{ item.username }}</ng-container>
                                     </ng-container>
                                 </td>
-                                <td class="title">{{ item.company }}</td>
+                                <td class="title">
+                                    <ng-container *ngIf="item.company === company._id">
+                                        {{company.name}}
+                                    </ng-container>
+                                </td>
                                 <td class="title">{{ item.accounttype }}</td>
                                 <td class="title">{{ item.status ? 'active' : 'inactive' }}</td>
+                            </ng-container>
                             </ng-container>
                         </tr>
                     </tbody>

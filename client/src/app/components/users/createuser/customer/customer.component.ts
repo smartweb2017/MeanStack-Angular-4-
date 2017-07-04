@@ -20,7 +20,8 @@ import {
 import {
   UsersService
 } from '../../../../services/users.service';
-
+declare var $: any;
+declare var toastr: any;
 @Component({
   selector: 'customer-user',
   templateUrl: './customer.component.html',
@@ -102,17 +103,15 @@ export class CustomerComponent implements OnInit {
   constructor(private http: Http, private router: Router, private roleService: RoleService, private companyService: CompanyService, private userService: UsersService) { }
 
   ngOnInit() {
-
+    //Init current roles
     this.roles = [];
-
+    //Get Current User
     this.user = JSON.parse(localStorage.getItem('user'));
-
+    //Init Special Elements
     this.newCompany = {
       name: '',
       status: ''
-    };
-
-    
+    };   
 
     this.customerPermission = {
       create: '',
@@ -149,9 +148,10 @@ export class CustomerComponent implements OnInit {
       delete: '',
       view: ''
     };
-
+    
     this.logoUrl = 'assets/images/default-logo.jpg';
     this.photoUrl = 'assets/images/photo.jpg';
+    //Init New Customer User
     this.customer = {
       username: '',
       password: '',
@@ -161,13 +161,14 @@ export class CustomerComponent implements OnInit {
       account_email: '',
       special_permissions: {}
     };
+    //Init New Customer User info
     this.user_info = {
       email: '',
       phone: '',
       mobile: ''
     };
 
-
+    //Init New Customer Customer Info
     this.customer_info = {
       position: '',
       prefered_contact: '',
@@ -181,9 +182,22 @@ export class CustomerComponent implements OnInit {
       key_contact: '',
       customer_type: ''
     };
+
+    //Get Current Companies
     this.getAllCompanies();
+    //Get Current Roles
     this.getAllRoles();
+    //Get Current Users
     this.getAllUsers();
+
+    //Init UI elements 
+    toastr.options = {
+        "debug": false,
+        "newestOnTop": false,
+        "positionClass": "toast-bottom-right",
+        "closeButton": true,
+        "progressBar": true
+    };
   }
 
   //Get All Users
@@ -195,7 +209,7 @@ export class CustomerComponent implements OnInit {
 
         if (res[i].accounttype === 'customer' ) {
 
-          this.users.push(res[i].username);
+          this.users.push(res[i]);
 
         }
 
@@ -212,11 +226,13 @@ export class CustomerComponent implements OnInit {
   getAllCompanies() {
     this.companyService.getAllCompanies().then((res) => {
       this.currentCompanies = [];
+      console.log(res);
       for(let i = 0; i<Object.keys(res).length; i++ ) {
         if(res[i].status === true) {
           this.currentCompanies.push(res[i]);
         }        
       }
+      console.log(this.currentCompanies);
     }, (err) => {
       console.log(err);
     });
@@ -262,7 +278,7 @@ export class CustomerComponent implements OnInit {
     this.customer['accounttype'] = 'customer';
 
     this.customer['customer_info'] = this.customer_info;
-
+   
     if (this.filesToLogo.length !== 0) {
 
       this.uploadLogo();
@@ -273,10 +289,14 @@ export class CustomerComponent implements OnInit {
       this.uploadPhoto();
 
     }
-
     this.userService.createNewUser(this.customer).then((result) => {
-
-      this.router.navigate(['/users']);
+      
+      if(!result['success']) {
+        toastr.error('Sorry, you were unable to create a user because the username is already being used please try again');
+      } else {
+        toastr.success('Success - New Cutomer Created!!!');
+        this.router.navigate(['/users']);
+      }      
 
     }, (err) => {
 
@@ -360,12 +380,10 @@ export class CustomerComponent implements OnInit {
       reader.readAsDataURL(event.target.files[0]);
     }
   }
-  createCompany () {
-    this.currentCompanies.push(this.newCompany.name);
-    this.customer.company = this.newCompany.name;
+  createCompany () {    
     this.newCompany.status = 'active';
     this.companyService.createCompany(this.newCompany).then((res) => {
-      this.getAllCompanies();
+      this.currentCompanies.push(res);      
     }, (err) => {
       console.log(err);
     });

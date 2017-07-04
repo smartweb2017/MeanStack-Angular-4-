@@ -1,5 +1,6 @@
 import {Component, ViewChild, OnInit, ViewEncapsulation} from '@angular/core';
 import {UsersService} from '../../services/users.service';
+import { CompanyService } from '../../services/company.service';
 import {Router, ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -9,6 +10,9 @@ import {Router, ActivatedRoute} from '@angular/router';
   styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
+
+  currentCompanies: any;
+  
   users: any;
 
   temp: any;
@@ -25,6 +29,7 @@ export class UsersComponent implements OnInit {
 
   constructor(
     private usersService: UsersService,
+    private companyService: CompanyService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -35,6 +40,7 @@ export class UsersComponent implements OnInit {
     this.childs = [];
     this.user = JSON.parse(localStorage.getItem('user'));
     this.getAllUsers();
+    this.getAllCompanies();
   }
 
   filter() {
@@ -45,6 +51,20 @@ export class UsersComponent implements OnInit {
       }
     }
     this.temp = temp1;
+  }
+
+  //Get Current Companies
+  getAllCompanies() {
+    this.companyService.getAllCompanies().then((res) => {
+      this.currentCompanies = [];
+      for(let i = 0; i<Object.keys(res).length; i++ ) {
+        if(res[i].status === true) {
+          this.currentCompanies.push(res[i]);
+        }        
+      }
+    }, (err) => {
+      console.log(err);
+    });
   }
   getAllUsers() {
     this.usersService.getAllUsers().then(

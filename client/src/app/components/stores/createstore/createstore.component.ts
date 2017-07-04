@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StoresService } from '../../../services/stores.service';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { UsersService } from '../../../services/users.service';
 @Component({
   selector: 'app-createstore',
   templateUrl: './createstore.component.html',
@@ -35,13 +35,15 @@ export class CreatestoreComponent implements OnInit {
   }
   regions = Object.keys(this.regionData);
   cities : any;
+  stores = [];
 
   constructor(private route: ActivatedRoute, private router: Router, private storeService : StoresService) { }
 
   ngOnInit() {
     this.store = {
       store_title: '',
-      key_contact: '',
+      parent: '',
+      child: [],
       status: Boolean
     };
     this.store_info = {
@@ -57,12 +59,30 @@ export class CreatestoreComponent implements OnInit {
       postcode: '',
       country: ''
     };
+
+    this.getAllStores();
+
   }
+
+  //Get All Stores
+  getAllStores() {
+    this.storeService.getAllStores().then((res) => {
+      // this.stores = res;
+      for(let i=0; i<Object.keys(res).length; i++) {
+        this.stores.push(res[i]);
+      }
+    }, (err) => {
+      console.error(err);
+    });
+  }
+
+  //Select Region
   selectRegion(event) {
     let region = event.target.value;    
     this.cities = this.regionData[region];
   }
 
+  // Create New Store
   onSubmit() {
     this.store['store_info'] = this.store_info;
     this.store.status = true;
@@ -72,6 +92,8 @@ export class CreatestoreComponent implements OnInit {
       console.log(err);
     });
   }
+
+  //Cancel Store Create
   cancel(){
   	this.router.navigate(['/stores']);
   }

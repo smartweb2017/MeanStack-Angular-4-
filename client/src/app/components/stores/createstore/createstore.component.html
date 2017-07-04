@@ -26,13 +26,6 @@
                                 <input type="text" name="title" placeholder="Enter Store Title" minlength="4" class="form-control" [(ngModel)]="store.store_title" #title="ngModel" required>
                             </div>
                         </div>
-                        <div class="form-group"  [ngClass]="{ 'has-error': key_contact.touched && key_contact.invalid }">
-                            <label class="col-lg-2 col-md-3 control-label">Key Contact</label>
-                            <div class="col-lg-5 col-md-5">
-                                <input type="text" name="key_contact" placeholder="Key Contact" class="form-control" [(ngModel)]="store.key_contact" #key_contact="ngModel" required>
-                            </div>
-                            <div *ngIf="storeForm.submitted && !key_contact.valid" class="help-block">Key Contact is required</div>
-                        </div>
                         <div class="form-group"  [ngClass]="{ 'has-error': email.touched && email.invalid }">
                             <label class="col-lg-2 col-md-3 control-label">Email</label>
                             <div class="col-lg-5 col-md-5">
@@ -85,6 +78,7 @@
                                 </select>
                             </div>
                         </div>
+                        
                         <div class="form-group" [ngClass]="{ 'has-error': post_code.touched && post_code.invalid }">
                             <label class="col-lg-2 col-md-3 control-label">Post Code</label>
                             <div class="col-lg-3 col-md-3">
@@ -99,6 +93,14 @@
                                 </select>
                             </div>
                             <div *ngIf="storeForm.submitted && !country.valid" class="help-block">Country is required</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-md-3 control-label">Parent</label>
+                            <div class="col-lg-5 col-md-5">
+                                <select class="fancy-select form-control" name="parent" [(ngModel)]="store.parent" #parent="ngModel" required>
+                                    <option *ngFor="let s of stores" [value]="s._id">{{ s.store_title }}</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group  text-center">
                             <div class="col-lg-2 col-md-3 col-md-offset-2 control-label">

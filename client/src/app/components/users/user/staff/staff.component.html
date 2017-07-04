@@ -31,8 +31,8 @@
               <label class="col-lg-2 col-md-3 control-label">Company</label>
               <div class="col-lg-4 col-md-4">
                 <select class="fancy-select form-control" name="company" [(ngModel)]="staff.company" required #company="ngModel">
-                           <option *ngFor="let c of currentCompanies" [value]="c.name">{{c.name}}</option>
-                        </select>
+                    <option *ngFor="let c of currentCompanies" [value]="c._id">{{c.name}}</option>
+                </select>
               </div>
               <button type="button" class="btn btn-info" data-toggle="modal" data-target="#companyModal" *ngIf="currentUser.accounttype==='super'"> Add A Company</button>
               <ng-container *ngIf="currentUser.accounttype==='staff' || currentUser.accounttype==='customer'">
@@ -105,8 +105,8 @@
               <label class="col-lg-2 col-md-3 control-label">Role</label>
               <div class="col-lg-3 col-md-3" *ngIf="modalValid">
                 <select class="fancy-select form-control" name="role" [(ngModel)]="staff.role" (change)="selectRole($event)">
-                           <option *ngFor="let r of roles" [value]="r.role_name">{{r.role_name}}</option>
-                        </select>
+                    <option *ngFor="let r of roles" [value]="r.role_name">{{r.role_name}}</option>
+                </select>
               </div>
               <div class="col-md-4">
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#roleModal"> Manage This User's Permission</button>
@@ -233,9 +233,18 @@
               <label class="col-lg-2 col-md-3 control-label" for="profileParent">Parent</label>
               <div class="col-lg-5 col-md-5">
                 <select class="fancy-select form-control" id="profileParent" name="parent" [(ngModel)]="staff.parent" #parent="ngModel">
-                            <option value="" ></option>
-                            <option *ngFor = "let p of users" [value]="p">{{ p }}</option>
-                        </select>
+                    <option value="" ></option>
+                    <option *ngFor = "let p of users" [value]="p._id">{{ p.username }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" >
+              <label for="key_contact" class="col-md-3 control-label">Key Contact</label>
+              <div class="col-md-8">
+                <select class="fancy-select form-control" id="key_contact" name="key_contact" [(ngModel)]="staff.key_contact" #company="ngModel">
+                    <option value="" ></option>
+                    <option *ngFor="let c of childs" [value]="c._id">{{c.username}}</option>
+                </select>
               </div>
             </div>
             <div class="form-group"  [ngClass]="{ 'has-error' : password.invalid && password.touched }">
@@ -253,11 +262,11 @@
             <div class="col-md-5">
               <div class="form-group text-center">
                 <button class="btn btn-info btn-primary" (click)="cancel()">
-                          Cancel
-                      </button>
-                <button type="submit" class="btn btn-info  btn-primary">
-                        Save
-                      </button>
+                    Cancel
+                </button>
+              <button type="submit" class="btn btn-info  btn-primary">
+                Save
+              </button>
 
               </div>
             </div>
