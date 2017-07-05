@@ -5,7 +5,7 @@ import { RoleService } from '../../../../services/role.service';
 import { CompanyService } from '../../../../services/company.service';
 import { UsersService } from '../../../../services/users.service';
 import { Staff } from './staff.interface';
-
+//TO usejQuery and toastr jQuery Plugins
 declare var $: any;
 declare var toastr: any;
 
@@ -15,6 +15,7 @@ declare var toastr: any;
   templateUrl: './staff.component.html',
   styleUrls: ['./staff.component.css']
 })
+
 export class StaffComponent implements OnInit {
 
   users = []; //For select Parent user
@@ -47,7 +48,7 @@ export class StaffComponent implements OnInit {
 
   newCompany: any;
 
-  roles: any;
+  roles = [];
 
   user: any;
 
@@ -57,7 +58,6 @@ export class StaffComponent implements OnInit {
 
   ngOnInit() {
 
-    this.roles = [];
     //Get Current Logged in User
     this.user = JSON.parse(localStorage.getItem('user'));
 

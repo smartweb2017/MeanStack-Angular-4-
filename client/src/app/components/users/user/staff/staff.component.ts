@@ -1,9 +1,10 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {EmailValidator} from '@angular/forms';
-import {Router} from '@angular/router';
-import {RoleService} from '../../../../services/role.service';
-import {CompanyService} from '../../../../services/company.service';
-import {UsersService} from '../../../../services/users.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { EmailValidator } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RoleService } from '../../../../services/role.service';
+import { CompanyService } from '../../../../services/company.service';
+import { UsersService } from '../../../../services/users.service';
+//TO usejQuery and toastr jQuery Plugins
 declare var $: any;
 declare var toastr: any;
 
@@ -183,15 +184,15 @@ export class StaffEditComponent implements OnInit {
       delete this.staff.special_permissions;
     }
     this.userService.updateUser(this.staff['id'], this.staff).then(
-      (result) => {
-        if(!result['success']) {
-          toastr.error('Sorry, you were unable to edit this user,  please try again');
+      result => {
+         if(!result['success']) {
+          toastr.error('Sorry, cannot edit this user, please try again');
         } else {
           toastr.success('Success !!!');
           this.router.navigate(['/users']);
-        } 
+        }
       },
-      (err) => {
+      err => {
         console.log(err);
       }
     );

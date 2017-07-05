@@ -16,8 +16,8 @@
 <div class="row">
   <div class="col-sm-12">
     <div class="form-group">
-      <button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-user"></i> Create New Order</button>
-      <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-user"></i> Merge For Single Payment</button>
+      <button type="button" id="button-filter" class="btn btn-primary" (click)="createOrder()"><i class="fa fa-user"></i> Create New Order</button>
+      
     </div>
 
 
@@ -32,30 +32,26 @@
         <div class="col-sm-3">
           <div class="form-group">
             <label class="control-label" for="input-status">Type</label>
-            <select name="filter_status" id="input-status" class="form-control">
-                <option value="*">New York</option>
-                <option value="1">London</option>
-                <option value="0">Paris</option>
+            <select name="filter_type" id="input-status" class="form-control" (change) = "filter($event)" [(ngModel)]="fType">
+                <option value="All">All</option>
+                <option value="Order">Order</option>
+                <option value="Invoice">Invoice</option>
             </select>
           </div>
         </div>
         <div class="col-sm-3">
           <div class="form-group">
             <label class="control-label" for="input-status">Store</label>
-            <select name="filter_status" id="input-status" class="form-control">
-                <option value="*">New York</option>
-                <option value="1">London</option>
-                <option value="0">Paris</option>
+            <select name="filter_store" id="input-status" class="form-control" (change) = "filter($event)" [(ngModel)]="fStore">
+              <option *ngFor="let s of stores" value="{{s}}">{{s}}</option>
             </select>
           </div>
         </div>
         <div class="col-sm-3">
           <div class="form-group">
             <label class="control-label" for="input-status">Village</label>
-            <select name="filter_status" id="input-status" class="form-control">
-                <option value="*">New York</option>
-                <option value="1">London</option>
-                <option value="0">Paris</option>
+            <select name="filter_village" id="input-status" class="form-control" (change) = "filter($event)" [(ngModel)]="fVillage">
+                <option *ngFor="let v of villages" value="{{v}}">{{v}}</option>
             </select>
           </div>
         </div>
@@ -86,27 +82,41 @@
               </th>
               <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Balance
               </th>
-              <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Actions
+              <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Amount to Pay
               </th>
             </tr>
           </thead>
-          <tbody *ngFor="let item of rows">
-            <tr>
-              <td class="text-center"> <input type="checkbox" name="selected[]" value="42">
+          <tbody>
+            <tr  *ngFor="let item of invoices">
+              <td class="text-center"> <input type="checkbox"  value="{{item.invnum}}" (change)="selectElement($event)" >
               </td>
-              <td class="text-center"><a [routerLink]="['/user', item.id]">{{ item.type }}</a></td>
-              <td class="text-center">{{ item.invoice }}</td>
-              <td class="text-center">{{ item.invoicedDate }}</td>
+              <td class="text-center">Order</td>
+              <td class="text-center">{{ item.invnum }}</td>
+              <td class="text-center">{{ item.invdate }}</td>
               <td class="text-center">{{ item.store }}</td>
               <td class="text-center">{{ item.village }}</td>
               <td class="text-center">{{ item.balance }}</td>
-              <td class="text-center"></td>
+              <td class="text-center">
+                <ng-container *ngIf="item.checked">
+                  <input type="text" name="{{item.invnum}}" [(ngModel)]="item.amounttopay" (change)="calculateSum()">
+                </ng-container> 
+              </td>
             </tr>
-
+            <tr>
+              <td class="text-center"></td>
+              <td class="text-center"></td>
+              <td class="text-center"></td>
+              <td class="text-center"></td>
+              <td class="text-center"></td>
+              <td class="text-center"></td>
+              <td class="text-center">{{sumBalance}}</td>
+              <td class="text-center">{{sumAmount}}</td>
+            </tr>
           </tbody>
         </table>
       </div>
     </form>
+    <br>
     <div class="form-group" *ngIf="user.accounttype === 'super' ">
       <button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-delete"></i> Delete Selected</button>
       <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-delete"></i> Send remittance advice</button>

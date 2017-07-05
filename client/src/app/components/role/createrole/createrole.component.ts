@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {RoleService} from '../../../services/role.service';
+//TO usejQuery and toastr jQuery Plugins
+declare var $: any;
+declare var toastr: any;
 
 @Component({
   selector: 'app-createrole',
@@ -104,7 +107,12 @@ export class CreateroleComponent implements OnInit {
     this.newRole.display_dashboard = this.display_dashboard;
     this.roleService.saveRole(this.newRole).then(
       res => {
-        this.router.navigate(['/roles']);
+         if(!res['success']) {
+          toastr.error('Sorry, cannot create new role, please try again');
+        } else {
+          toastr.success('Success !!!');
+          this.router.navigate(['/roles']);
+        }
       },
       err => {
         alert('Something went wrong!!!');

@@ -1,6 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {CompanyService} from '../../../services/company.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CompanyService } from '../../../services/company.service';
+//TO usejQuery and toastr jQuery Plugins
+declare var $: any;
+declare var toastr: any;
 
 @Component({
   selector: 'app-editcompany',
@@ -42,8 +45,12 @@ export class EditcompanyComponent implements OnInit {
       .updateCompany(this.currentCompany._id, this.currentCompany)
       .then(
         res => {
-          console.log('success');
-          this.router.navigate(['/companies']);
+          if(!res['success']) {
+            toastr.error('Sorry, edit this  company, please try again');
+          } else {
+            toastr.success('Success !!!');
+            this.router.navigate(['/companies']);
+          }
         },
         err => {
           console.error(err);

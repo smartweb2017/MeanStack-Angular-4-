@@ -1,10 +1,25 @@
-import {  Component, OnInit } from '@angular/core';
-import {  Http } from '@angular/http'
-import {  EmailValidator } from '@angular/forms';
-import {  Router } from '@angular/router';
-import {  RoleService } from '../../../../services/role.service';
-import {  CompanyService } from '../../../../services/company.service';
-import {  UsersService } from '../../../../services/users.service';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+import {
+  Http
+} from '@angular/http'
+import {
+  EmailValidator
+} from '@angular/forms';
+import {
+  Router
+} from '@angular/router';
+import {
+  RoleService
+} from '../../../../services/role.service';
+import {
+  CompanyService
+} from '../../../../services/company.service';
+import {
+  UsersService
+} from '../../../../services/users.service';
 declare var $: any;
 declare var toastr: any;
 @Component({

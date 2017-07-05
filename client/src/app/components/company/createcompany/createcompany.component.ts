@@ -1,6 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {CompanyService} from '../../../services/company.service';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { CompanyService } from '../../../services/company.service';
+import { Router } from '@angular/router';
+//TO usejQuery and toastr jQuery Plugins
+declare var $: any;
+declare var toastr: any;
+
 @Component({
   selector: 'app-createcompany',
   templateUrl: './createcompany.component.html',
@@ -25,7 +29,12 @@ export class CreatecompanyComponent implements OnInit {
     this.newCompany.status = true;
     this.companyService.createCompany(this.newCompany).then(
       res => {
-        this.router.navigate(['/companies']);
+       if(!res['success']) {
+          toastr.error('Sorry, create new company, please try again');
+        } else {
+          toastr.success('Success !!!');
+          this.router.navigate(['/companies']);
+        }
       },
       err => {
         console.error(err);

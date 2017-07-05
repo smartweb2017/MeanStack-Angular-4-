@@ -1,0 +1,11 @@
+ .td-title {
+     width: 30%;
+     color:  white;
+     background-color: #434a4f;
+ }
+
+ .order-input {
+     border: none;
+     margin: 0; 
+     width: 100%;
+ }

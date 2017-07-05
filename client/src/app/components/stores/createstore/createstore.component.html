@@ -97,7 +97,7 @@
                         <div class="form-group">
                             <label class="col-lg-2 col-md-3 control-label">Parent</label>
                             <div class="col-lg-5 col-md-5">
-                                <select class="fancy-select form-control" name="parent" [(ngModel)]="store.parent" #parent="ngModel" required>
+                                <select class="fancy-select form-control" name="parent" [(ngModel)]="store.parent" #parent="ngModel">
                                     <option *ngFor="let s of stores" [value]="s._id">{{ s.store_title }}</option>
                                 </select>
                             </div>

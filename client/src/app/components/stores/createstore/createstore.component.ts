@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { StoresService } from '../../../services/stores.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from '../../../services/users.service';
+//TO usejQuery and toastr jQuery Plugins
 declare var $: any;
 declare var toastr: any;
+
 @Component({
   selector: 'app-createstore',
   templateUrl: './createstore.component.html',
@@ -89,7 +91,12 @@ export class CreatestoreComponent implements OnInit {
     this.store['store_info'] = this.store_info;
     this.store.status = true;
     this.storeService.saveStore(JSON.stringify(this.store)).then((result) => {      
-      this.router.navigate(['/stores']);
+      if(!result['success']) {
+        toastr.error('Sorry, annot create new store, please try again');
+      } else {
+        toastr.success('Success !!!');
+        this.router.navigate(['/stores']);
+      }
     }, (err) => {
       console.log(err);
     });

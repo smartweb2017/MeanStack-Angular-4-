@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RoleService} from '../../../services/role.service';
+//TO usejQuery and toastr jQuery Plugins
+declare var $: any;
+declare var toastr: any;
 
 @Component({
   selector: 'app-editrole',
@@ -54,10 +57,14 @@ export class EditroleComponent implements OnInit {
     this.currentRole.role = this.role;
     this.currentRole.status = this.status;
     this.currentRole.display_dashboard = this.display_dashboard;
-    console.log(this.currentRole);
     this.roleService.updateRole(this.currentRole._id, this.currentRole).then(
       res => {
-        this.router.navigate(['/roles']);
+        if(!res['success']) {
+          toastr.error('Sorry, cannot edit this role, please try again');
+        } else {
+          toastr.success('Success !!!');
+          this.router.navigate(['/roles']);
+        }
       },
       err => {
         console.log(err);

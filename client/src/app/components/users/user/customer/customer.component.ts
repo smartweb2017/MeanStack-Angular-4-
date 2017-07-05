@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { RoleService } from '../../../../services/role.service';
 import { CompanyService } from '../../../../services/company.service';
 import { UsersService } from '../../../../services/users.service';
+//TO usejQuery and toastr jQuery Plugins
 declare var $: any;
 declare var toastr: any;
 
@@ -244,9 +245,8 @@ export class CustomerEditComponent implements OnInit {
       delete this.customer.special_permissions;
     }
     this.userService.updateUser(this.customer.id, this.customer).then((result) => {
-      
       if(!result['success']) {
-        toastr.error('Sorry, you were unable to edit this user,  please try again');
+        toastr.error('Sorry, cannot edit this user, please try again');
       } else {
         toastr.success('Success !!!');
         this.router.navigate(['/users']);
