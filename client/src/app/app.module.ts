@@ -40,8 +40,8 @@ import { EditcompanyComponent } from './components/company/editcompany/editcompa
 import { BlankComponent } from './components/blank/blank.component';
 
 const appRoutes: Routes = [
-  { path: 'dashboard', component: DashboardComponent},
-  { path: 'roles', component: RoleComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard] },
+  { path: 'roles', component: RoleComponent, canActivate:[AuthGuard]  },
   { path: 'users',     component: UsersComponent, canActivate:[AuthGuard] },
   { path: 'user', component: CreateuserComponent, canActivate:[AuthGuard] },
   { path: 'user/:id', component: UserComponent, canActivate:[AuthGuard]},
@@ -51,11 +51,11 @@ const appRoutes: Routes = [
   { path: 'stores',    component: StoresComponent, canActivate:[AuthGuard] },
   { path: 'orders',    component: OrdersComponent, canActivate:[AuthGuard] },
   { path: 'register', component: RegisterComponent },
-  { path: 'role/:id', component: EditroleComponent },
-  { path: 'companies', component: CompanyComponent },
-  { path: 'company', component: CreatecompanyComponent },
-  { path: 'company/:id', component: EditcompanyComponent },
-  { path: 'createrole', component: CreateroleComponent },
+  { path: 'role/:id', component: EditroleComponent, canActivate:[AuthGuard]  },
+  { path: 'companies', component: CompanyComponent, canActivate:[AuthGuard]  },
+  { path: 'company', component: CreatecompanyComponent, canActivate:[AuthGuard]  },
+  { path: 'company/:id', component: EditcompanyComponent, canActivate:[AuthGuard]  },
+  { path: 'createrole', component: CreateroleComponent , canActivate:[AuthGuard] },
   { path: 'blank', component: BlankComponent },
   { path: 'login', component: LoginComponent },
   { path: '',   redirectTo: '/login', pathMatch: 'full' },

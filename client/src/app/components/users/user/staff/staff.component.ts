@@ -4,7 +4,6 @@ import {Router} from '@angular/router';
 import {RoleService} from '../../../../services/role.service';
 import {CompanyService} from '../../../../services/company.service';
 import {UsersService} from '../../../../services/users.service';
-import MaskedInput from '@msafi/angular2-text-mask';
 declare var $: any;
 declare var toastr: any;
 

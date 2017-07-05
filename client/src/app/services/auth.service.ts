@@ -18,20 +18,7 @@ export class AuthService {
 
   }
 
-  registerUser(user){
-    
-    let headers = new Headers();
-    
-    headers.append( 'Content-Type','application/json' );
-    
-    let ep = this.prepEndpoint( 'users/register' );
-    
-    return this.http.post(ep, user,{ headers: headers })
-      .map(res => res.json());
-  
-  }
-
-  authenticateUser(user){
+  authenticateUser(user) {
     
     let headers = new Headers();
    
@@ -43,7 +30,7 @@ export class AuthService {
       .map(res => res.json());
   }
 
-  getProfile(){
+  getProfile() {
     
     let headers = new Headers();
     
@@ -64,7 +51,7 @@ export class AuthService {
     localStorage.setItem('id_token', token);
     
     localStorage.setItem('user', JSON.stringify(user));
-    // console.log('token =' + token +'  user data =' + JSON.stringify(user));    
+     
     this.authToken = token;
     
     this.user = user;
@@ -78,7 +65,7 @@ export class AuthService {
   }
 
   loggedIn(){    
-    //console.log(this.user);
+    
     return tokenNotExpired('id_token');
   
   }

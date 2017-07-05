@@ -374,11 +374,11 @@ router.put('/:id', function(req, res, next) {
       });
     });
   } else {
-    if (req.body.special_permissions) {
+    if (req.body.special_permissions) { /* if user has the special permissions instead of role */
       User.findByIdAndUpdate(req.body.userid, content, (err, user) => {
          if (err) return res.json({ success: false, error: err });
       });
-    } else {
+    } else { /* if user has a role */
         User.findByIdAndUpdate( req.body.userid, {$unset: {special_permissions: 0}}, (err, user) => {
             if (err) return res.json({ success: false, error: err });
             User.findByIdAndUpdate(user._id, content, (err, updateUser) => {
@@ -389,14 +389,12 @@ router.put('/:id', function(req, res, next) {
       }
   }
 
-  if (req.body.accounttype === 'staff') {
+  if (req.body.accounttype === 'staff') { /* if user's accounttype is staff*/
     Staff.findByIdAndUpdate(id, content, (err, staff) => {
        if (err) return res.json({ success: false, error: err });
       res.json(staff);
     });
-  }
-
-  if (req.body.accounttype === 'customer') {
+  } else { /* if user's accounttype is Customer*/
     Customer.findById(id, (err, customer) => {
       if (err) console.log(err);
       if(customer.parent !== req.body.parent) {
@@ -417,9 +415,7 @@ router.put('/:id', function(req, res, next) {
       }
       if (customer.child.length !== 0) {
         for (let i = 0; i < customer.child.length; i++) {
-          Customer.findOne(
-            {username: customer.child[i]},
-            (err, childCustomer) => {
+          Customer.findOne({username: customer.child[i]}, (err, childCustomer) => {
               if (err) console.log(err);
               if (childCustomer) {
                 if (childCustomer.logo === customer.logo) {
@@ -449,8 +445,13 @@ router.post('/authenticate', (req, res, next) => {
   const password = req.body.password;
 
   User.getUserByUsername(username, (err, user) => {
-     if (err) return res.json({ success: false, error: err });
+    if (err) return res.json({ success: false, error: err });
     if (!user) {
+      return res.json({
+        success: false,
+        msg: 'User not found',
+      });
+    } else {
       return res.json({
         success: false,
         msg: 'User not found',
@@ -477,18 +478,10 @@ router.post('/authenticate', (req, res, next) => {
         }
 
         if (user.accounttype === 'staff') {
-          Staff.findOne(
-            {
-              username: user.username,
-            },
-            (err, staff) => {
-               if (err) return res.json({ success: false, error: err });
-              Role.findOne(
-                {
-                  role_name: staff.role,
-                },
-                (err, roledata) => {
-                   if (err) return res.json({ success: false, error: err });
+          Staff.findOne({ username: user.username }, (err, staff) => {
+              if (err) return res.json({ success: false, error: err });
+              Role.findOne({ role_name: staff.role }, (err, roledata) => {
+                  if (err) return res.json({ success: false, error: err });
                   res.json({
                     success: true,
                     token: 'JWT ' + token,
@@ -507,21 +500,11 @@ router.post('/authenticate', (req, res, next) => {
               );
             }
           );
-        }
-
-        if (user.accounttype === 'customer') {
-          Customer.findOne(
-            {
-              username: user.username,
-            },
-            (err, customer) => {
-               if (err) return res.json({ success: false, error: err });
-              Role.findOne(
-                {
-                  role_name: customer.role,
-                },
-                (err, roledata) => {
-                   if (err) return res.json({ success: false, error: err });
+        } else {
+          Customer.findOne({ username: user.username }, (err, customer) => {
+              if (err) return res.json({ success: false, error: err });
+              Role.findOne({ role_name: customer.role }, (err, roledata) => {
+                  if (err) return res.json({ success: false, error: err });
                   res.json({
                     success: true,
                     token: 'JWT ' + token,
@@ -561,17 +544,12 @@ router.get( '/', passport.authenticate('jwt', {session: false}),(req, res, next)
     );
   }
 );
+
+// Inactivate Users
 router.post('/inactivate', (req, res, next) => {
   for (let i = 0; i < req.body.length; i++) {
-    User.findByIdAndUpdate(
-      req.body[i],
-      {
-        $set: {
-          status: false,
-        },
-      },
-      (err, user) => {
-         if (err) return res.json({ success: false, error: err });
+    User.findByIdAndUpdate( req.body[i], { $set: { status: false }}, (err, user) => {
+        if (err) return res.json({ success: false, error: err });
       }
     );
   }
@@ -580,17 +558,12 @@ router.post('/inactivate', (req, res, next) => {
     msg: 'Sucess!!',
   });
 });
+
+// Deactivate Users
 router.post('/activate', (req, res, next) => {
   for (let i = 0; i < req.body.length; i++) {
-    User.findByIdAndUpdate(
-      req.body[i],
-      {
-        $set: {
-          status: true,
-        },
-      },
-      (err, user) => {
-         if (err) return res.json({ success: false, error: err });
+    User.findByIdAndUpdate( req.body[i], { $set: { status: true } },  (err, user) => {
+        if (err) return res.json({ success: false, error: err });
       }
     );
   }
@@ -599,22 +572,16 @@ router.post('/activate', (req, res, next) => {
     msg: 'Deactiaveted Successfully',
   });
 });
+
+// Delete Users
 router.post('/delete', (req, res, next) => {
   for (let i = 0; i < req.body.length; i++) {
     User.findById(req.body[i], (err, user) => {
       if (user.accounttype === 'staff') {
-        Staff.findOne(
-          {
-            username: user.username,
-          },
-          (err, staff) => {
+        Staff.findOne({ username: user.username }, (err, staff) => {
             if (err) console.log(err);
             if (staff.parent) {
-              Staff.findOne(
-                {
-                  username: staff.parent,
-                },
-                (err, parentStaff) => {
+              Staff.findOne({ username: staff.parent }, (err, parentStaff) => {
                   if (err) console.log(err);
                   if (parentStaff) {
                     if (parentStaff.child.length !== 0) {
@@ -635,26 +602,17 @@ router.post('/delete', (req, res, next) => {
             }
           }
         );
-        Staff.findOneAndRemove(
-          {
-            username: user.username,
-          },
-          (err, remove) => {
+        Staff.findOneAndRemove({ username: user.username }, (err, remove) => {
             if (err) console.error(err);
           }
         );
       }
 
       if (user.accounttype === 'customer') {
-        Customer.findOne(
-          {
-            username: user.username,
-          },
-          (err, customer) => {
+        Customer.findOne({ username: user.username }, (err, customer) => {
             if (err) console.log(err);
             if (customer.parent !== '') {
-              Customer.findOne(
-                {
+              Customer.findOne( {
                   username: customer.parent,
                 },
                 (err, parentCustomer) => {
@@ -679,11 +637,7 @@ router.post('/delete', (req, res, next) => {
             }
           }
         );
-        Customer.findOneAndRemove(
-          {
-            username: user.username,
-          },
-          (err, remove) => {
+        Customer.findOneAndRemove({ username: user.username }, (err, remove) => {
             if (err) console.error(err);
           }
         );
