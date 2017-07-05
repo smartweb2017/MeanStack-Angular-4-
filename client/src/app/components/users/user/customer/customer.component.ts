@@ -6,7 +6,8 @@ import { RoleService } from '../../../../services/role.service';
 import { CompanyService } from '../../../../services/company.service';
 import { UsersService } from '../../../../services/users.service';
 import MaskedInput from '@msafi/angular2-text-mask';
-
+declare var $: any;
+declare var toastr: any;
 @Component({
   selector: 'edit-customer',
   templateUrl: './customer.component.html',
@@ -243,7 +244,13 @@ export class CustomerEditComponent implements OnInit {
       delete this.customer.special_permissions;
     }
     this.userService.updateUser(this.customer.id, this.customer).then((result) => {
-      this.router.navigate(['/users']);
+      
+      if(!result['success']) {
+        toastr.error('Sorry, you were unable to edit this user,  please try again');
+      } else {
+        toastr.success('Success !!!');
+        this.router.navigate(['/users']);
+      } 
     }, (err) => {
       console.log(err);
     });

@@ -1,4 +1,6 @@
 import {Component, OnInit, ViewEncapsulation, ViewChild} from '@angular/core';
+declare var $: any;
+declare var toastr: any;
 
 @Component({
   selector: 'app-orders',

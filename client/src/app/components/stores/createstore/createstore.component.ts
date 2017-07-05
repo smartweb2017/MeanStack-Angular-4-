@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { StoresService } from '../../../services/stores.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from '../../../services/users.service';
+declare var $: any;
+declare var toastr: any;
 @Component({
   selector: 'app-createstore',
   templateUrl: './createstore.component.html',

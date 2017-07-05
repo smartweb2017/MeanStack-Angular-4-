@@ -200,7 +200,7 @@ export class StaffComponent implements OnInit {
       if(!result['success']) {
         toastr.error('Sorry, you were unable to create a user because the username is already being used please try again');
       } else {
-        toastr.success('Success - New Cutomer Created!!!');
+        toastr.success('Success - New Staff Created!!!');
         this.router.navigate(['/users']);
       } 
     }, (err) => {
