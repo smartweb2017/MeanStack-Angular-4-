@@ -117,7 +117,7 @@
         <form method="post" enctype="multipart/form-data" id="form-product" class="">
             <div class="table-responsive">
                 <table class="tablesaw" data-tablesaw-sortable data-tablesaw-sortable-switch>
-                    <thead *ngIf="user.accounttype === 'super'">
+                    <thead >
                         <tr>
                             <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">
                                 #
@@ -128,30 +128,7 @@
                             <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="4">Status</th>
                         </tr>
                     </thead>
-                    <thead *ngIf="user.accounttype === 'staff'">
-                        <tr>
-                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">
-                                #
-                            </th>
-                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Name</th>
-                            <th id="custom-sort" scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Company</th>
-                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="1">User Type</th>
-                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="4">Status</th>
-                        </tr>
-                    </thead>
-                    <thead *ngIf="user.accounttype === 'customer'">
-                        <tr>
-                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">
-                                #
-                            </th>
-                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Name</th>
-                            <th id="custom-sort" scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Company</th>
-                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="1">
-                                <abbr title="Rotten Tomato Rating">User Type</abbr>
-                            </th>
-                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="4">Status</th>
-                        </tr>
-                    </thead>
+                    
                     <tbody *ngIf="user.accounttype === 'super'">
                         <tr *ngFor="let item of temp  ">
                             <ng-container *ngFor="let company of currentCompanies">
