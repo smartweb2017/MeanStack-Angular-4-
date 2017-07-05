@@ -366,40 +366,27 @@ router.put('/:id', function(req, res, next) {
              if (err) return res.json({ success: false, error: err });
           });
         } else {
-          User.findByIdAndUpdate(
-            req.body.userid,
-            content,
-            {
-              $unset: {
-                special_permissions: 1,
-              },
-            },
-            (err, user) => {
+          User.findByIdAndUpdate( req.body.userid, content, { $unset: { special_permissions: 1 }}, (err, user) => {
                if (err) return res.json({ success: false, error: err });
             }
           );
         }
       });
     });
-  }
-  if (!req.body.password) {
+  } else {
     if (req.body.special_permissions) {
       User.findByIdAndUpdate(req.body.userid, content, (err, user) => {
          if (err) return res.json({ success: false, error: err });
       });
-    }
-    if (!req.body.special_permissions) {
-      User.findByIdAndUpdate(
-        req.body.userid,
-        {$unset: {special_permissions: 0}},
-        (err, user) => {
-           if (err) return res.json({ success: false, error: err });
-          User.findByIdAndUpdate(user._id, content, (err, updateUser) => {
-            if (err) console.log(err);
-          });
-        }
-      );
-    }
+    } else {
+        User.findByIdAndUpdate( req.body.userid, {$unset: {special_permissions: 0}}, (err, user) => {
+            if (err) return res.json({ success: false, error: err });
+            User.findByIdAndUpdate(user._id, content, (err, updateUser) => {
+              if (err) console.log(err);
+            });
+          }
+        );
+      }
   }
 
   if (req.body.accounttype === 'staff') {
@@ -413,7 +400,20 @@ router.put('/:id', function(req, res, next) {
     Customer.findById(id, (err, customer) => {
       if (err) console.log(err);
       if(customer.parent !== req.body.parent) {
-        console.log('different parent');
+        Customer.findById(customer.parent, (err, parentCustomer) => {
+          if(err) res.json({ success: false, error: err});
+          if(parentCustomer) {
+            let child = parentCustomer.child;
+            child.splice(customer._id, 1);
+
+            parentCustomer.child = child;
+
+            parentCustomer.save();
+          } else {
+            console.log('Cannot find Parent Customer');
+            return;
+          }
+        })
       }
       if (customer.child.length !== 0) {
         for (let i = 0; i < customer.child.length; i++) {
